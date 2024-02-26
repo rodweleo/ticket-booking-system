@@ -9,15 +9,20 @@ import { AuthProvider } from './AuthProvider.tsx';
 import { ErrorPage } from './pages/error/index.tsx';
 import { Login } from './pages/authentication/Login.tsx';
 import { Register } from './pages/authentication/Register.tsx';
-import App from './App.tsx';
 import { Tickets } from './pages/tickets/index.tsx';
 import { Profile } from './pages/profile/index.tsx';
 import { Events } from './pages/eventvista/admin/events/index.tsx';
+import { Account } from './pages/account/index.tsx';
+import { App } from './App.tsx';
 
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <App />,
+    element: <App />
+  },
+  {
+    path: "/account",
+    element: <Account />,
     errorElement: <ErrorPage />,
     children: [
       {

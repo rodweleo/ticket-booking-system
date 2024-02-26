@@ -2,7 +2,7 @@ import { TextField } from "../../../../../../components/TextField"
 
 export const EditEventModal = ({ event, setEditEvent }) => {
     return <dialog open className="bg-black bg-opacity-50 w-full h-screen fixed top-0 flex items-center justify-center">
-        <form className="bg-white w-1/2 h-auto rounded-md relative p-5">
+        <form className="bg-white w-1/2 rounded-md relative p-5">
             <h1>Edit event <span className="font-bold">{event.id}</span></h1>
             <div className="h-4"></div>
             <i className="fa-solid fa-close absolute top-[-40px] right-[-40px] bg-red-300 p-2.5 rounded-full cursor-pointer text-red-900 hover:bg-red-400" onClick={() => setEditEvent(null)}></i>
@@ -45,6 +45,31 @@ export const EditEventModal = ({ event, setEditEvent }) => {
                                 type: "number"
                             }} />
                         </div>
+                    </div>
+                </div>
+
+                <div>
+                    <h2 className="font-bold">Location</h2>
+                    <div className="w-full grid grid-cols-2 gap-4">
+                        <TextField
+                            options={{
+                                label: "Venue",
+                                type: "astring",
+
+                            }} />
+
+                        <TextField
+                            options={{
+                                label: "Address",
+                                type: "address",
+
+                            }} />
+                        <TextField
+                            options={{
+                                label: "County",
+                                type: "address",
+
+                            }} />
                     </div>
                 </div>
 
