@@ -2,6 +2,13 @@
 @import "tailwindcss/components.css";
 @import "tailwindcss/utilities.css";
 
+html{
+scroll-behavior: smooth;
+scroll-snap-stop: normal;
+height: 100%;
+min-height: 100vh;
+}
 body{
     background-color: black;
+    min-height: 100vh;
 }

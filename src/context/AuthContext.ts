@@ -1,4 +1,6 @@
-import { getAuth } from "firebase/auth";
-import { createContext } from "react";
+import { Auth } from "firebase/auth";
 
-export const AuthContext = createContext(getAuth);
+import { createContext } from "react";
+import { auth } from "../firebase/firebase.config";
+
+export const AuthContext = createContext<Auth>(auth);

@@ -28,5 +28,30 @@ export const useTickets = () => {
     fetchTickets();
   }, []);
 
-  return { tickets };
+  const reserveTickets = (tickets) => {
+    //CHECK IF THE REQUEST HAS REGULAR TICKETS
+    if (tickets.regular > 0 && tickets.vip > 0) {
+      //GENERATE THE REGULAR TICKETS
+      for (let i = 0; i < tickets.regular; i++) {
+        console.log("Regular ticket: " + i);
+      }
+      for (let j = 0; j < tickets.vip; j++) {
+        //CREATE A PROMISE FOR EACH TICKET TO SAVE THE TICKET
+        console.log("VIP ticket: " + j);
+      }
+    } else if (tickets.vip > 0) {
+      for (let j = 0; j < tickets.vip; j++) {
+        //CREATE A PROMISE FOR EACH TICKET TO SAVE THE TICKET
+        console.log("VIP ticket: " + j);
+      }
+    } else if (tickets.regular > 0) {
+      for (let j = 0; j < tickets.regular; j++) {
+        //CREATE A PROMISE FOR EACH TICKET TO SAVE THE TICKET
+        console.log("Regular ticket: " + j);
+      }
+    }
+    
+  };
+
+  return { tickets, reserveTickets };
 };

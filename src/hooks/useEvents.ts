@@ -1,10 +1,4 @@
-import {
-  DocumentReference,
-  addDoc,
-  collection,
-  getDocs,
-  query,
-} from "firebase/firestore";
+import { addDoc, collection, getDocs, query } from "firebase/firestore";
 import { useEffect, useState } from "react";
 import { db } from "../firebase/firebase.config";
 import moment from "moment";
@@ -63,5 +57,6 @@ export const useEvents = () => {
   const deleteEvent = async (event) => {
     console.log(event);
   };
+
   return { events, addEvent, editEvent, deleteEvent };
 };

@@ -1,7 +1,10 @@
 import { useContext, useEffect } from 'react';
-import { Outlet, useNavigate } from 'react-router';
+import { Route, Routes, useNavigate } from 'react-router';
 import { NavBar } from '../../components/ui/NavBar';
 import { AuthContext } from '../../context/AuthContext';
+import { Events } from '../homepage/pages/events';
+import { Profile } from '../profile';
+import { Tickets } from '../tickets';
 
 
 export const Account = () => {
@@ -9,16 +12,18 @@ export const Account = () => {
     const navigate = useNavigate()
 
     useEffect(() => {
-        /*if (authContext.user === null) {
-          navigate("/login")
-        }*/
+        if (authContext.currentUser === null) {
+            navigate("/login")
+        }
     }, [])
 
     return <main className="flex flex-1 overflow-hidden">
         <NavBar />
-        <main className="px-2.5 flex-1 overflow-x-hidden overflow-y-auto bg-gray-200 w-full">
-            <Outlet />
-        </main>
+        <Routes>
+            <Route path="events" element={<Events />} />
+            <Route path="tickets" element={<Tickets />} />
+            <Route path="profile" element={<Profile />} />
+        </Routes>
 
     </main>
 };

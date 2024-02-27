@@ -1,3 +1,31 @@
+#main-nav-bar{
+    z-index: 1;
+    position: sticky;
+    top: 0;
+    width: 100%;
+    padding: 20px;
+    
+}
+#main-nav-bar ul li a{
+    --tw-text-opacity: 1;
+        color: rgb(203 213 225 / var(--tw-text-opacity));
+        font-weight: bold;
+        transition: all ease-in-out;
+        transition-duration: 0.2s;
+
+}
+
+#main-nav-bar ul li a.active{
+    padding: 5px 10px;
+    border-bottom: 5px solid blue;
+    color: white;
+    font-weight: bold;
+}
+
+section{
+    scroll-margin-top: 100px;
+}
+
 table{
     border: 1px solid grey;
     border-collapse: collapse;

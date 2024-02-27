@@ -9,7 +9,6 @@ interface AuthProviderProps {
 export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     const auth = getAuth();
 
-
     return <AuthContext.Provider value={auth}>
         {children}
     </AuthContext.Provider>
