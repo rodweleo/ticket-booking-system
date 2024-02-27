@@ -51,25 +51,26 @@ export const useUsers = () => {
     }
   };
 
-  const signIn = async (data): Promise<string | null> => {
-    await signInWithEmailAndPassword(auth, data.emailAddress, data.password)
-      .then(() => {
-        return "Login Successful. Redirecting...";
-      })
-      .catch((error) => {
-        const errorCode = error.code;
-        const errorMessage = error.message;
-        if (errorMessage.includes("invalid-credential")) {
-          setLoginError({
-            code: errorCode,
-            message: "Incorrect email address or password.",
-          });
+  const signIn = async (data) => {
+    try {
+      const response = await signInWithEmailAndPassword(
+        auth,
+        data.emailAddress,
+        data.password
+      );
+      return `Login Successful. Redirecting...`;
+    } catch (error: any) {
+      const errorCode = error.code;
+      const errorMessage = error.message;
+      if (errorMessage.includes("invalid-credential")) {
+        setLoginError({
+          code: errorCode,
+          message: "Incorrect email address or password.",
+        });
 
-          return null;
-        }
-      });
-
-    return null;
+        return null;
+      }
+    }
   };
   return { createAccount, errorCreatingAccount, signIn, errorSigningIn };
 };

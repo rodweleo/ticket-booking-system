@@ -36,6 +36,7 @@ export const Login = () => {
     const onSubmit = async (data: FieldValues) => {
         const response = await signIn(data)
         if (response) {
+            alert(response)
             navigate("/account")
         } else {
             alert(errorSigningIn.message)
