@@ -12,7 +12,7 @@ import { db } from "../firebase/firebase.config";
 import moment from "moment";
 import { UserContext } from "../context/UserContext";
 import { useNavigate } from "react-router";
-import { Event } from "../utils/interfaces";
+import { Event, Ticket } from "../utils/interfaces";
 
 export const useEvents = () => {
   const userContext = useContext(UserContext);
@@ -152,7 +152,7 @@ export const useEvents = () => {
     }
   };
 
-  const deleteEvent = async (event) => {
+  const deleteEvent = async (event: Event) => {
     try {
       await updateDoc(doc(db, "events", event.id), {
         isDeleted: true,
@@ -171,7 +171,7 @@ export const useEvents = () => {
     }
   };
 
-  const fetchEventTickets = async (event) => {
+  const fetchEventTickets = async (event: Event) => {
     try {
       const q = query(
         collection(db, "tickets"),
@@ -183,7 +183,11 @@ export const useEvents = () => {
         return snapshot.data();
       });
 
-      return eventTickets;
+      if (eventTickets.length > 0) {
+        return eventTickets as Ticket[];
+      } else {
+        return [];
+      }
     } catch (error) {
       console.log(error);
       return [];

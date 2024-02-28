@@ -6,7 +6,7 @@ export const Events = () => {
     return <section className="w-full">
         <div className="bg-white w-fit p-5 rounded-md shadow-2xl">
             <h1 className="text-slate-400 font-bold">Total Events</h1>
-            <span className="text-slate-800 font-bold">{events.length}</span>
+            <span className="text-slate-800 font-bold">{events?.length}</span>
         </div>
         <div className="h-4"></div>
         <EventList events={events} />

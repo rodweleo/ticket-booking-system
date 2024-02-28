@@ -1,8 +1,11 @@
 import { Link, Route, Routes } from "react-router-dom"
 import { EventListItem } from "./event-list-item"
 import { AddEventModal } from "./modal/AddEventModal"
-
-export const EventList = ({ events }) => {
+import { Event } from "../../../../../utils/interfaces"
+interface EventsProps {
+    events: Event[] | null | undefined
+}
+export const EventList: React.FC<EventsProps> = ({ events }) => {
 
 
     return (

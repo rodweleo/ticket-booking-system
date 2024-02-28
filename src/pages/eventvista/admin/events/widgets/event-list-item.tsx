@@ -2,14 +2,19 @@ import { useEffect, useId, useState } from "react"
 import { useEvents } from "../../../../../hooks/useEvents"
 import { EditEventModal } from "./modal/EditEventModal"
 import moment from "moment"
-import { DocumentData } from "firebase/firestore"
+import { Event, Ticket } from "../../../../../utils/interfaces"
 
-export const EventListItem = ({ event, index }) => {
+
+interface EventProps {
+    event: Event,
+    index: number
+}
+export const EventListItem: React.FC<EventProps> = ({ event, index }) => {
     const { deleteEvent, fetchEventTickets } = useEvents()
     const eventActionMenuId = useId()
 
-    const [editEvent, setEditEvent] = useState(null);
-    const [eventTickets, setEventTickets] = useState<DocumentData[]>();
+    const [editEvent, setEditEvent] = useState<Event | null>(null);
+    const [eventTickets, setEventTickets] = useState<Ticket[] | null>();
     function toggleEventActionMenu() {
         document.getElementById(eventActionMenuId)?.classList.toggle("hidden")
     }
@@ -35,7 +40,7 @@ export const EventListItem = ({ event, index }) => {
                             <td>{eventTickets?.filter(ticket => {
                                 return ticket.type === "Regular"
                             }).length} </td>
-                            <td>{event.tickets.types.regular.number - eventTickets?.filter(ticket => {
+                            <td>{event.tickets.types.regular.number - eventTickets!.filter(ticket => {
                                 return ticket.type === "Regular"
                             }).length} </td>
                         </tr>
@@ -45,7 +50,7 @@ export const EventListItem = ({ event, index }) => {
                         <td>{eventTickets?.filter(ticket => {
                             return ticket.type === "VIP"
                         }).length} </td>
-                        <td>{event.tickets.types.vip.number - eventTickets?.filter(ticket => {
+                        <td>{event.tickets.types.vip.number - eventTickets!.filter(ticket => {
                             return ticket.type === "VIP"
                         })?.length} </td>
                     </tr></td>
@@ -64,7 +69,7 @@ export const EventListItem = ({ event, index }) => {
                 </tr>
             </td>
 
-            <td>{moment(event.dateofEvent).format("dddd, MMMM Do YYYY")}</td>
+            <td>{moment(event.dateOfEvent).format("dddd, MMMM Do YYYY")}</td>
             <td className="relative">
                 <i className="fa-solid fa-ellipsis-vertical cursor-pointer" onClick={() => toggleEventActionMenu()}></i>
                 <ul id={eventActionMenuId} className="absolute hidden bg-slate-400 text-white w-40 top-16 right-0 text-left space-y-1 ">

@@ -1,7 +1,13 @@
 import { TextField } from "../../../../../../components/TextField"
 import { FieldValues, useForm } from "react-hook-form";
 import { useEvents } from "../../../../../../hooks/useEvents";
-export const EditEventModal = ({ event, setEditEvent }) => {
+import { Event } from "../../../../../../utils/interfaces";
+
+interface EditEventModalProps {
+    event: Event,
+    setEditEvent: React.Dispatch<React.SetStateAction<Event | null>>
+}
+export const EditEventModal: React.FC<EditEventModalProps> = ({ event, setEditEvent }) => {
     const { editEvent } = useEvents()
     const { register, handleSubmit } = useForm();
 
