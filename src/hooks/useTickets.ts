@@ -155,7 +155,7 @@ export const useTickets = () => {
       if (querySnapshot.empty) {
         return [];
       } else {
-        const fetchedTickets = querySnapshot.docs.map((ticket) => {
+        const fetchedTickets: any = querySnapshot.docs.map((ticket) => {
           return ticket.data();
         });
 

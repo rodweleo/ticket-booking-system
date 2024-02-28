@@ -1,7 +1,7 @@
 import { Link, Route, Routes } from "react-router-dom"
 import { EventListItem } from "./event-list-item"
 import { AddEventModal } from "./modal/AddEventModal"
-import { Event } from "../../../../../utils/interfaces"
+import { Event } from "../../../../../../utils/interfaces"
 interface EventsProps {
     events: Event[] | null | undefined
 }

@@ -155,7 +155,7 @@ export const EventPage = () => {
                                 currency: "KES"
                             })}</span>
                         </div>
-                        <button className="bg-blue-900 rounded-md p-2.5 text-white" onClick={() => reserveTickets(selectedTickets)}>Reserve Tickets</button>
+                        <button className="bg-blue-900 rounded-md p-2.5 text-white" onClick={() => reserveTickets(event, selectedTickets)}>Reserve Tickets</button>
                     </div>
 
                 </div >

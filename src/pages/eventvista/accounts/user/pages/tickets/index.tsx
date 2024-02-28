@@ -8,7 +8,9 @@ export const MyTickets = () => {
     const { fetchUserTickets, userTickets } = useTickets()
 
     useEffect(() => {
-        fetchUserTickets(userContext?.id);
+        if (userContext) {
+            fetchUserTickets(userContext.id);
+        }
     }, [])
     return <section className="space-y-4">
         <h1 className="text-white font-bold text-2xl">My Tickets</h1>
