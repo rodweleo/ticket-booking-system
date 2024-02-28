@@ -1,7 +1,7 @@
 import moment from "moment";
 import { useEffect, useState } from "react";
 import { useLocation, useNavigate, useParams } from "react-router"
-import { useTickets } from "../../../../hooks/useTickets";
+import { useTickets } from "../../../../../../../hooks/useTickets";
 
 export const EventPage = () => {
     const navigate = useNavigate();
@@ -66,13 +66,24 @@ export const EventPage = () => {
         }
     }
 
-    //TOTAL REGULAR TICKET AMOUNT
+    const handleTicketReservation = async () => {
+        const response = await reserveTickets(event, selectedTickets);
 
-    //const className = "z-50 w-full  backdrop-blur-sm h-screen top-0"
+        if (response.errors.length === 0) {
+            alert(`${response.successes.length} ticket(s) reserved.`)
+            setSelectedTickets({
+                totalAmount: 0,
+                regular: 0,
+                totalRegularAmount: 0,
+                totalVipAmount: 0,
+                vip: 0
+            })
+        }
+    }
     return (
         <section className="space-y-10">
             <p className="text-white text-xl font-bold"><i className="fa-solid fa-arrow-left text-white" onClick={() => navigate(-1)}></i> {id}</p>
-            <section className="flex justify-start max-lg:flex-wrap items-start h-screen space-x-4 transition-all duration-300 ease-in-out">
+            <section className="flex justify-start max-lg:flex-wrap h-screen space-x-4 transition-all duration-300 ease-in-out">
                 <img src="/images/hero-section-bg.png" alt="" className="lg:w-1/2 object-contain rounded-md" />
 
                 <div>
@@ -88,21 +99,21 @@ export const EventPage = () => {
                             </div>
                             <ul className="text-white flex space-x-2">
                                 <li><i className="fa-solid fa-clock text-slate-400"></i></li>
-                                <li>{moment(event.time.from).format("LT")}</li>
+                                <li>{event.time.from}</li>
                                 <li>-</li>
-                                <li>{moment(event.time.to).format("LT")}</li>
+                                <li>{event.time.to}</li>
                             </ul>
                         </div>
 
                         <div className="space-y-3">
                             <h2 className="font-bold text-white text-2xl">About</h2>
-                            <p className="text-slate-400">{event.description}</p>
+                            <p className="text-slate-300 text-lg">{event.description}</p>
                         </div>
                         <div className="space-y-3">
                             <h2 className="font-bold text-white text-2xl">Tickets</h2>
-                            <table className="text-white">
+                            <table>
                                 <thead>
-                                    <tr>
+                                    <tr className="text-slate-700">
                                         <th className="p-2.5">Ticket Type</th>
                                         <th className="p-2.5">Tickets Available</th>
                                         <th className="p-2.5">Price (KES)</th>
@@ -110,7 +121,7 @@ export const EventPage = () => {
                                 </thead>
                                 <tbody>
                                     {Object.entries(event.tickets.types).map((ticketType: any, index: number) => (
-                                        <tr className="border text-center" key={index}>
+                                        <tr className="border text-center font-bold" key={index}>
                                             <td className="p-2.5 border">{ticketType[0].toUpperCase()}</td>
                                             <td className="border">{ticketType[1].number}</td>
                                             <td>{ticketType[1].price.toLocaleString("en", {
@@ -155,7 +166,7 @@ export const EventPage = () => {
                                     currency: "KES"
                                 })}</span>
                             </div>
-                            <button className="bg-blue-900 rounded-md p-2.5 text-white" onClick={() => reserveTickets(selectedTickets)}>Reserve Tickets</button>
+                            <button className="bg-blue-900 rounded-md p-2.5 text-white font-bold disabled:bg-slate-400 disabled:text-slate-600" onClick={() => handleTicketReservation()} disabled={(selectedTickets.regular + selectedTickets.vip) === 0}>Reserve Tickets</button>
                         </div>
                     </div >
                 </div>

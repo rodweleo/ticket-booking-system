@@ -1,7 +1,7 @@
-import { TextField } from "../../../../../../components/TextField"
+import { TextField } from "../../../../../../../components/TextField"
 import { FieldValues, useForm } from "react-hook-form";
-import { useEvents } from "../../../../../../hooks/useEvents";
-import { Event } from "../../../../../../utils/interfaces";
+import { useEvents } from "../../../../../../../hooks/useEvents";
+import { Event } from "../../../../../../../utils/interfaces";
 
 interface EditEventModalProps {
     event: Event,

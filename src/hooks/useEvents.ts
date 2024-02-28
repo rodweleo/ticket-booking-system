@@ -17,7 +17,8 @@ import { Event, Ticket } from "../utils/interfaces";
 export const useEvents = () => {
   const userContext = useContext(UserContext);
   const navigate = useNavigate();
-  const [events, setEvents] = useState<Event[] | null>();
+  const [events, setEvents] = useState<Event[] | null>([]);
+  const [isFetchingEvents, setIsLoading] = useState(true);
   const [addingEventError, setAddingEventError] = useState({
     code: 0,
     message: "",
@@ -37,8 +38,11 @@ export const useEvents = () => {
         }));
 
         setEvents(fetchedEvents);
+        setIsLoading(false);
       } catch (e) {
         console.error(e);
+        setEvents([]);
+        setIsLoading(false);
       }
     }
 
@@ -195,6 +199,7 @@ export const useEvents = () => {
   };
   return {
     events,
+    isFetchingEvents,
     addEvent,
     addingEventError,
     editEvent,

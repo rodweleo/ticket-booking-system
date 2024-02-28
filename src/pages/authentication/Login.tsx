@@ -13,22 +13,13 @@ export const Login = () => {
     const handleGoogleSignIn = () => {
         signInWithPopup(auth, provider)
             .then((result) => {
-                const credential = GoogleAuthProvider.credentialFromResult(result);
-                const token = credential?.accessToken;
-                // The signed-in user info.
+
                 const user = result.user;
                 if (user) {
-                    navigate("/account");
+                    navigate("/account", { state: user });
                 }
             }).catch((error) => {
-                // Handle Errors here.
-                const errorCode = error.code;
-                const errorMessage = error.message;
-                // The email of the user's account used.
-                const email = error.customData.email;
-                // The AuthCredential type that was used.
-                const credential = GoogleAuthProvider.credentialFromError(error);
-
+                throw error;
             });
     }
     const { register, handleSubmit } = useForm()
@@ -36,7 +27,9 @@ export const Login = () => {
     const onSubmit = async (data: FieldValues) => {
         const response = await signIn(data)
         if (response) {
-            navigate("/account")
+            navigate("/account", {
+                state: response
+            })
         } else {
             alert(errorSigningIn.message)
         }

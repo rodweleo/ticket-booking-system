@@ -1,4 +1,4 @@
-import { useEvents } from "../../../../hooks/useEvents"
+import { useEvents } from "../../../../../hooks/useEvents"
 import { EventList } from "./widgets/event-list"
 
 export const Events = () => {

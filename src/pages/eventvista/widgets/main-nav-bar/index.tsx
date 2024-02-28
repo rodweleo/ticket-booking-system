@@ -3,7 +3,7 @@ import { NavLink } from "react-router-dom"
 
 export const MainNavBar = () => {
     useEffect(() => {
-        const handleClickEvent = (event) => {
+        const handleClickEvent = (event: any) => {
             const target = event.target;
             const mainNavLinks = document.getElementsByClassName("main-nav-link");
 

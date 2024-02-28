@@ -1,8 +1,8 @@
 import { useEffect, useId, useState } from "react"
-import { useEvents } from "../../../../../hooks/useEvents"
+import { useEvents } from "../../../../../../hooks/useEvents"
 import { EditEventModal } from "./modal/EditEventModal"
 import moment from "moment"
-import { Event, Ticket } from "../../../../../utils/interfaces"
+import { Event, Ticket } from "../../../../../../utils/interfaces"
 
 
 interface EventProps {
@@ -14,7 +14,7 @@ export const EventListItem: React.FC<EventProps> = ({ event, index }) => {
     const eventActionMenuId = useId()
 
     const [editEvent, setEditEvent] = useState<Event | null>(null);
-    const [eventTickets, setEventTickets] = useState<Ticket[] | null>();
+    const [eventTickets, setEventTickets] = useState<Ticket[] | null>([]);
     function toggleEventActionMenu() {
         document.getElementById(eventActionMenuId)?.classList.toggle("hidden")
     }

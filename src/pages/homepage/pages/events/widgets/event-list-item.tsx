@@ -1,4 +1,11 @@
-export const EventListItem = ({ event, index }) => {
+import { Event } from "../../../../../utils/interfaces";
+
+interface EventListItemProp {
+    event: Event,
+    index: number
+}
+
+export const EventListItem: React.FC<EventListItemProp> = ({ event, index }) => {
     return <div className="w-96 bg-white rounded-md border border-white relative" key={index}>
         <img src="/images/hero-section-bg.png" alt="" className="object-fill rounded-t-md" />
         <div className="p-1">

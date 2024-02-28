@@ -1,24 +1,24 @@
 import { FieldValues, useForm } from "react-hook-form"
 import { TextField } from "../../components/TextField"
-import { GoogleAuthProvider } from "firebase/auth";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useUsers } from "../../hooks/useUsers";
 
 export const Register = () => {
     const { createAccount, errorCreatingAccount } = useUsers();
-    const provider = new GoogleAuthProvider();
-
+    const navigate = useNavigate()
     const handleGoogleSignUp = () => {
         //FIRST LOGIN WITH THE GOOGLE AUTH PROVIDER
+        
     }
     const { register, handleSubmit } = useForm()
 
     //SIGNINGG UP USING EMAIL AND PASSWORD
     const submitAccountDetails = async (data: FieldValues) => {
         if (data.password === data.confirmPassword) {
-            const response = await createAccount(data)
+            await createAccount(data).then(() => {
+                navigate("/login")
+            })
 
-            console.log(response)
             if (errorCreatingAccount.message.length > 0) {
                 alert(errorCreatingAccount.message)
             }

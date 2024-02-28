@@ -2,7 +2,7 @@ import { TextField } from "../../../../../components/TextField"
 
 export const Footer = () => {
     return <footer className="flex flex-col w-full absolute mt-full">
-        <section className="flex justify-between hidden">
+        <section className="justify-between hidden">
             <h1 className="text-white font-bold">EventVista</h1>
             <ul>
                 <h2 className="text-white font-bold">Contact Us</h2>
@@ -16,7 +16,8 @@ export const Footer = () => {
                 <div className="space-y-2 ">
                     <TextField
                         options={{
-                            label: "",
+                            name: "emailAddress",
+                            label: "Email Address",
                             type: "email",
                             placeHolder: "abc@gmail.com"
                         }} />

@@ -1,7 +1,15 @@
+import { useContext } from "react"
+import { Ticket } from "../../../utils/interfaces"
 import { TicketListItem } from "./ticket-list-item"
+import { UserContext } from "../../../context/UserContext"
 
-export const TicketList = ({ tickets }) => {
-    return <table className="text-center w-full">
+
+interface TicketListProps {
+    tickets: Ticket[] | null
+}
+export const TicketList: React.FC<TicketListProps> = ({ tickets }) => {
+    const userContext = useContext(UserContext)
+    return <table className="text-left w-full">
         <thead>
             <tr>
                 <th className="p-2.5">#</th>
@@ -13,7 +21,7 @@ export const TicketList = ({ tickets }) => {
                 <th>Date of Purchase</th>
                 <th>Validity</th>
                 <th>isValid</th>
-                <th>Action</th>
+                {userContext?.role === "admin" && <th>Action</th>}
             </tr>
         </thead>
         <tbody>

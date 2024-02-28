@@ -49,6 +49,8 @@ export interface Ticket {
   eventId: string;
   eventName: string;
   type: "VIP" | "Regular";
+  price: number;
+  expiresBy: string;
   isDeleted: boolean;
   deleteddBy: string;
   deletedOn: string;

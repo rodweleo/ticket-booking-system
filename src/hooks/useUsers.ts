@@ -4,14 +4,14 @@ import {
 } from "firebase/auth";
 import { useContext, useEffect, useState } from "react";
 import { auth, db } from "../firebase/firebase.config";
-import { DocumentData, doc, getDoc, setDoc } from "firebase/firestore";
+import { doc, getDoc, setDoc } from "firebase/firestore";
 import { AuthContext } from "../context/AuthContext";
+import { User } from "../utils/interfaces";
+import { FieldValues } from "react-hook-form";
 
 export const useUsers = () => {
   const authContext = useContext(AuthContext);
-  const [activeUser, setActiveUser] = useState<
-    DocumentData | null | undefined
-  >();
+  const [activeUser, setActiveUser] = useState<User | null>();
   const [errorCreatingAccount, setError] = useState({
     code: 0,
     message: "",
@@ -22,7 +22,7 @@ export const useUsers = () => {
     message: "",
   });
 
-  const fetchUserById = async (userId) => {
+  const fetchUserById = async (userId: string) => {
     try {
       const docRef = doc(db, "users", userId);
       const docSnap = await getDoc(docRef);
@@ -38,16 +38,17 @@ export const useUsers = () => {
   useEffect(() => {
     const user = auth.currentUser;
 
-    if (user) {
+    if (user !== null) {
       fetchUserById(user?.uid).then((userDetails) => {
-        setActiveUser(userDetails);
+        const response = userDetails as User;
+        setActiveUser(response);
       });
     } else {
       setActiveUser(null);
     }
-  }, [auth]);
+  }, []);
 
-  const createAccount = async (data) => {
+  const createAccount = async (data: FieldValues) => {
     try {
       const userCredential = await createUserWithEmailAndPassword(
         auth,
@@ -64,6 +65,7 @@ export const useUsers = () => {
           createdAt: userCredential.user.metadata.creationTime,
           phoneNumber: data.phoneNumber,
           emailVerified: userCredential.user.emailVerified,
+          role: "user",
         }
       );
 
@@ -82,7 +84,7 @@ export const useUsers = () => {
     }
   };
 
-  const signIn = async (data) => {
+  const signIn = async (data: FieldValues) => {
     try {
       const response = await signInWithEmailAndPassword(
         auth,
@@ -93,8 +95,6 @@ export const useUsers = () => {
       const userId = response.user.uid;
       //RETRIEVE THE DETAILS OF THE USER USING THE ID
       const userDetails = fetchUserById(userId);
-
-      //AFTER GETTING THE DETAILS OF THE ACTIVE USER
 
       return userDetails;
     } catch (error: any) {

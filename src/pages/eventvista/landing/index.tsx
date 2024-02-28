@@ -1,11 +1,11 @@
 import { Routes, Route } from "react-router"
-import { Account } from "../../account"
 import { Login } from "../../authentication/Login"
 import { Register } from "../../authentication/Register"
 import { MainNavBar } from "../../../pages/eventvista/widgets/main-nav-bar"
 import { HomePage } from "../../homepage"
 import { EventPage } from "../../homepage/pages/events/event"
 import { Events } from "../../homepage/pages/events"
+import { Account } from "../accounts"
 
 export const LandingPage = () => {
 

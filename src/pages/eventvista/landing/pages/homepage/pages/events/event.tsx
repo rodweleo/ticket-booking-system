@@ -1,7 +1,8 @@
 import moment from "moment";
 import { useEffect, useState } from "react";
 import { useLocation, useNavigate, useParams } from "react-router"
-import { useTickets } from "../../../../hooks/useTickets";
+import { useTickets } from "../../../../../../../hooks/useTickets";
+
 
 export const EventPage = () => {
     const navigate = useNavigate();
@@ -68,7 +69,7 @@ export const EventPage = () => {
 
     //TOTAL REGULAR TICKET AMOUNT
 
-    const className = "z-50 w-full  backdrop-blur-sm h-screen top-0"
+    //const className = "z-50 w-full  backdrop-blur-sm h-screen top-0"
     return (
         <section className="fixed top-0 right-0 w-2/4 z overflow-y-scroll z-50 bg-black">
             <i className="fa-solid fa-close p-2.5 rounded-full bg-red-300 text-red-600 hover:bg-red-400 cursoer-pointer absolute right-[-50px] top-[-50px]" onClick={() => navigate(-1)}></i>
@@ -108,7 +109,7 @@ export const EventPage = () => {
                                 </tr>
                             </thead>
                             <tbody>
-                                {Object.entries(event.tickets.types).map((ticketType) => (
+                                {Object.entries(event.tickets.types).map((ticketType: any) => (
                                     <tr className="border text-center">
                                         <td className="p-2.5 border">{ticketType[0].toUpperCase()}</td>
                                         <td className="border">{ticketType[1].number}</td>

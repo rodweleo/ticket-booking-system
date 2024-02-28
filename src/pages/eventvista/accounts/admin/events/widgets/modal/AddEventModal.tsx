@@ -1,7 +1,7 @@
-import { TextField } from "../../../../../../components/TextField"
 import { FieldValues, useForm } from "react-hook-form";
-import { useEvents } from "../../../../../../hooks/useEvents";
 import { useNavigate } from "react-router";
+import { useEvents } from "../../../../../../../hooks/useEvents";
+import { TextField } from "../../../../../../../components/TextField";
 export const AddEventModal = () => {
     const { addEvent } = useEvents()
     const { register, handleSubmit } = useForm();
