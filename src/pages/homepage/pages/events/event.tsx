@@ -109,8 +109,8 @@ export const EventPage = () => {
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    {Object.entries(event.tickets.types).map((ticketType) => (
-                                        <tr className="border text-center">
+                                    {Object.entries(event.tickets.types).map((ticketType, index: number) => (
+                                        <tr className="border text-center" key={index}>
                                             <td className="p-2.5 border">{ticketType[0].toUpperCase()}</td>
                                             <td className="border">{ticketType[1].number}</td>
                                             <td>{ticketType[1].price.toLocaleString("en", {

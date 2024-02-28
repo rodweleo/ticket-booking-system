@@ -2,11 +2,16 @@ import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
 } from "firebase/auth";
-import { useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { auth, db } from "../firebase/firebase.config";
-import { doc, setDoc } from "firebase/firestore";
+import { DocumentData, doc, getDoc, setDoc } from "firebase/firestore";
+import { AuthContext } from "../context/AuthContext";
 
 export const useUsers = () => {
+  const authContext = useContext(AuthContext);
+  const [activeUser, setActiveUser] = useState<
+    DocumentData | null | undefined
+  >();
   const [errorCreatingAccount, setError] = useState({
     code: 0,
     message: "",
@@ -16,6 +21,32 @@ export const useUsers = () => {
     code: 0,
     message: "",
   });
+
+  const fetchUserById = async (userId) => {
+    try {
+      const docRef = doc(db, "users", userId);
+      const docSnap = await getDoc(docRef);
+
+      const user = docSnap.data();
+      return user;
+    } catch (error) {
+      console.error(error);
+      return null;
+    }
+  };
+
+  useEffect(() => {
+    const user = auth.currentUser;
+
+    if (user) {
+      fetchUserById(user?.uid).then((userDetails) => {
+        setActiveUser(userDetails);
+      });
+    } else {
+      setActiveUser(null);
+    }
+  }, [auth]);
+
   const createAccount = async (data) => {
     try {
       const userCredential = await createUserWithEmailAndPassword(
@@ -58,7 +89,14 @@ export const useUsers = () => {
         data.emailAddress,
         data.password
       );
-      return `Login Successful. Redirecting...`;
+
+      const userId = response.user.uid;
+      //RETRIEVE THE DETAILS OF THE USER USING THE ID
+      const userDetails = fetchUserById(userId);
+
+      //AFTER GETTING THE DETAILS OF THE ACTIVE USER
+
+      return userDetails;
     } catch (error: any) {
       const errorCode = error.code;
       const errorMessage = error.message;
@@ -72,5 +110,18 @@ export const useUsers = () => {
       }
     }
   };
-  return { createAccount, errorCreatingAccount, signIn, errorSigningIn };
+
+  const signOut = () => {
+    authContext.signOut().then(() => {
+      setActiveUser(null);
+    });
+  };
+  return {
+    createAccount,
+    errorCreatingAccount,
+    signIn,
+    errorSigningIn,
+    activeUser,
+    signOut,
+  };
 };

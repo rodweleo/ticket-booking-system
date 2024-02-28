@@ -3,15 +3,18 @@ import './index.css'
 import {
   BrowserRouter,
 } from "react-router-dom";
-import { AuthProvider } from './AuthProvider.tsx';
+import { AuthProvider } from './providers/AuthProvider.tsx';
 import { App } from './App.tsx';
+import { UserProvider } from './providers/UserProvider.tsx';
 
 
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <AuthProvider>
-    <BrowserRouter>
-      <App />
-    </BrowserRouter>
+    <UserProvider>
+      <BrowserRouter>
+        <App />
+      </BrowserRouter>
+    </UserProvider>
   </AuthProvider>,
 )

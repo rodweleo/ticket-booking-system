@@ -1,16 +1,14 @@
-import { useContext } from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
-import { AuthContext } from '../../context/AuthContext';
+import { useUsers } from '../../hooks/useUsers';
+
 
 export const NavBar = () => {
-    const authContext = useContext(AuthContext);
+    const { signOut } = useUsers();
     const navigate = useNavigate();
-    //const user = authContext.currentUser;
 
-    const signOut = () => {
-        authContext.signOut().then(() => {
+    const logout = () => {
+        signOut(),
             navigate("/login")
-        })
     }
     return <nav className='p-2.5 h-screen flex flex-col justify-between bg-blue-900/50 w-32 text-white'>
         <ul className='space-y-4'>
@@ -21,7 +19,7 @@ export const NavBar = () => {
 
         <ul className='flex flex-col gap-2'>
             <li><i className="fa-solid fa-gear text-white 105"></i> <NavLink to="settings">Settings</NavLink></li>
-            <li > <button onClick={() => signOut()}><i className="fa-solid fa-arrow-right-from-bracket text-red-900"></i> Sign out</button></li>
+            <li > <button onClick={() => logout()}><i className="fa-solid fa-arrow-right-from-bracket text-red-900"></i> Sign out</button></li>
         </ul>
 
     </nav>

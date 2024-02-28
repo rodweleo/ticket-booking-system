@@ -1,29 +1,33 @@
-import { useContext, useEffect } from 'react';
+import { useEffect } from 'react';
 import { Route, Routes, useNavigate } from 'react-router';
 import { NavBar } from '../../components/ui/NavBar';
-import { AuthContext } from '../../context/AuthContext';
-import { Events } from '../homepage/pages/events';
 import { Profile } from '../profile';
 import { Tickets } from '../tickets';
+import { EventList } from '../eventvista/admin/events/widgets/event-list';
+import { useEvents } from '../../hooks/useEvents';
+import { useUsers } from '../../hooks/useUsers';
 
 
 export const Account = () => {
-    const authContext = useContext(AuthContext);
+    const { activeUser } = useUsers();
+    const { events } = useEvents()
     const navigate = useNavigate()
 
     useEffect(() => {
-        if (authContext.currentUser === null) {
+        if (activeUser === null) {
             navigate("/login")
         }
     }, [])
 
-    return <main className="flex flex-1 overflow-hidden">
+    return <main className="flex flex-1 items-start overflow-hidden w-full">
         <NavBar />
-        <Routes>
-            <Route path="events" element={<Events />} />
-            <Route path="tickets" element={<Tickets />} />
-            <Route path="profile" element={<Profile />} />
-        </Routes>
+        <main className='px-2.5 h-screen w-full'>
+            <Routes>
+                <Route path="events/*" element={<EventList events={events} />} />
+                <Route path="tickets" element={<Tickets />} />
+                <Route path="profile" element={<Profile />} />
+            </Routes>
+        </main>
 
     </main>
 };

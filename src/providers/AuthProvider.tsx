@@ -1,5 +1,5 @@
 import { ReactNode } from "react"
-import { AuthContext } from "./context/AuthContext"
+import { AuthContext } from "../context/AuthContext"
 import { getAuth } from "firebase/auth"
 
 interface AuthProviderProps {

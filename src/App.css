@@ -29,6 +29,7 @@ section{
 table{
     border: 1px solid grey;
     border-collapse: collapse;
+    width: 100%;
 }
 
 table thead {
@@ -38,4 +39,12 @@ table thead {
 
 table tbody tr td{
     padding: 10px 0 10px 0;
+}
+
+table tbody tr:nth-child(odd){
+    background-color: white;
+}
+
+table tbody tr:nth-child(even) {
+    background-color: white;
 }

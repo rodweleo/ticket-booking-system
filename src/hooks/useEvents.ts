@@ -1,11 +1,27 @@
-import { addDoc, collection, getDocs, query } from "firebase/firestore";
-import { useEffect, useState } from "react";
+import {
+  addDoc,
+  collection,
+  doc,
+  getDocs,
+  query,
+  updateDoc,
+  where,
+} from "firebase/firestore";
+import { useContext, useEffect, useState } from "react";
 import { db } from "../firebase/firebase.config";
 import moment from "moment";
+import { UserContext } from "../context/UserContext";
+import { useNavigate } from "react-router";
+import { Event } from "../utils/interfaces";
 
 export const useEvents = () => {
-  const [events, setEvents] = useState([]);
-
+  const userContext = useContext(UserContext);
+  const navigate = useNavigate();
+  const [events, setEvents] = useState<Event[] | null>();
+  const [addingEventError, setAddingEventError] = useState({
+    code: 0,
+    message: "",
+  });
   //RETRIEVING ALL THE EVENTS IN THE DATABASE
   useEffect(() => {
     async function fetchEvents() {
@@ -27,36 +43,158 @@ export const useEvents = () => {
     }
 
     fetchEvents();
-  }, []);
+  }, [navigate]);
 
   //DEFINING FUNCTIONS TO ADD, EDIT AND REMOVE EVENTS
-  const addEvent = async (event) => {
-    const docRef = await addDoc(collection(db, "events"), {
+  const addEvent = async (event: any) => {
+    const eventData = {
       id: "",
-      title: event.name,
-      dateOfEvent: moment().format("YYYY-mm-dd"),
-    });
+      title: event.eventName,
+      description: event.description,
+      tickets: {
+        types: {
+          regular: {
+            number: Number(event.numberOfRegularTickets),
+            price: Number(event.regularTicketPrice),
+          },
+          vip: {
+            number: Number(event.numberOfVIPTickets),
+            price: Number(event.vipTicketPrice),
+          },
+        },
+      },
+      location: {
+        venue: event.venue,
+        address: {
+          address: event.address,
+          county: event.county,
+        },
+      },
+      dateOfEvent: event.dateOfEvent,
+      time: {
+        from: event.from,
+        to: event.to,
+      },
+      updatedOn: "",
+      updatedBy: "",
+      createdBy: userContext?.emailAddress,
+      createdOn: moment().format("L HH:mm:ss"),
+      isDeleted: false,
+      deletedOn: "",
+    };
+    try {
+      const docRef = await addDoc(collection(db, "events"), eventData);
 
-    if (docRef.id) {
-      console.log("event added successfully");
+      //AFTER ADDING THE EVENT SUCCESSFULLY, UPDATE THE ID OF THE DOCUMENT WITH THE DOCUMENT ID
+      await updateDoc(doc(db, "events", docRef.id), {
+        id: docRef.id,
+      });
+      return `Event has been added under id ${docRef.id}`;
+    } catch (error: any) {
+      console.log(error);
+      const errorCode = error.code;
+      const errorMessage = error.message;
+      setAddingEventError({
+        code: errorCode,
+        message: errorMessage,
+      });
+
+      return null;
     }
   };
 
-  const editEvent = async (event) => {
-    const docRef = await addDoc(collection(db, "events"), {
-      id: "",
-      title: event.name,
-      dateOfEvent: moment().format("YYYY-mm-dd"),
-    });
+  const editEvent = async (event: any) => {
+    const eventData = {
+      id: event.id,
+      title: event.eventName,
+      description: event.description,
+      tickets: {
+        types: {
+          regular: {
+            number: Number(event.numberOfRegularTickets),
+            price: Number(event.regularTicketPrice),
+          },
+          vip: {
+            number: Number(event.numberOfVIPTickets),
+            price: Number(event.vipTicketPrice),
+          },
+        },
+      },
+      location: {
+        venue: event.venue,
+        address: {
+          address: event.address,
+          county: event.county,
+        },
+      },
+      dateOfEvent: event.dateOfEvent,
+      time: {
+        from: event.from,
+        to: event.to,
+      },
+      updatedOn: moment().format("L HH:mm:ss"),
+      updatedBy: userContext?.emailAddress,
+      createdBy: userContext?.emailAddress,
+      isDeleted: false,
+    };
+    try {
+      await updateDoc(doc(db, "events", event.id), eventData);
 
-    if (docRef.id) {
-      console.log("event added successfully");
+      return `Event ${event.id} has been updated successfully.`;
+    } catch (error: any) {
+      const errorCode = error.code;
+      const errorMessage = error.message;
+
+      return {
+        errorCode,
+        errorMessage,
+      };
     }
   };
 
   const deleteEvent = async (event) => {
-    console.log(event);
+    try {
+      await updateDoc(doc(db, "events", event.id), {
+        isDeleted: true,
+        deletedOn: moment().format("L HH:mm:ss"),
+      });
+
+      return `Event ${event.id} has been deleted.`;
+    } catch (error: any) {
+      const errorCode = error.code;
+      const errorMessage = error.message;
+
+      return {
+        errorCode,
+        errorMessage,
+      };
+    }
   };
 
-  return { events, addEvent, editEvent, deleteEvent };
+  const fetchEventTickets = async (event) => {
+    try {
+      const q = query(
+        collection(db, "tickets"),
+        where("eventId", "==", event.id)
+      );
+      const querySnapshot = await getDocs(q);
+
+      const eventTickets = querySnapshot.docs.map((snapshot) => {
+        return snapshot.data();
+      });
+
+      return eventTickets;
+    } catch (error) {
+      console.log(error);
+      return [];
+    }
+  };
+  return {
+    events,
+    addEvent,
+    addingEventError,
+    editEvent,
+    deleteEvent,
+    fetchEventTickets,
+  };
 };

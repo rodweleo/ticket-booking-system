@@ -1,21 +1,25 @@
 import { TicketListItem } from "./ticket-list-item"
 
 export const TicketList = ({ tickets }) => {
-    return <table className="text-left w-full">
+    return <table className="text-center w-full">
         <thead>
             <tr>
-                <th>#</th>
-                <th>ID</th>
-                <th>Owner</th>
+                <th className="p-2.5">#</th>
+                <th>Ticket ID</th>
+                <th>Owner ID</th>
+                <th>Owner Name</th>
                 <th>Type</th>
-                <th>Amount</th>
+                <th>Price</th>
                 <th>Date of Purchase</th>
-                <th>Status</th>
+                <th>Validity</th>
+                <th>isValid</th>
                 <th>Action</th>
             </tr>
         </thead>
         <tbody>
-            {tickets?.map((ticket, index: number) => (
+            {tickets?.filter(ticket => {
+                return ticket.isDeleted !== true
+            }).map((ticket, index: number) => (
                 <TicketListItem ticket={ticket} index={index} />
             ))}
         </tbody>
