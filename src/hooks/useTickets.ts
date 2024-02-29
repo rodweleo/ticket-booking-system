@@ -13,9 +13,13 @@ import { Ticket, Event } from "../utils/interfaces";
 import moment from "moment";
 import { UserContext } from "../context/UserContext";
 import { sendTicketReservationMail } from "../utils/functions/sendTicketReservationMail";
+import { AuthContext } from "../context/AuthContext";
+import { useUsers } from "./useUsers";
 
 export const useTickets = () => {
   const userContext = useContext(UserContext);
+  const authContext = useContext(AuthContext);
+  const { fetchUserById } = useUsers();
   const [tickets, setTickets] = useState<Ticket[] | null>([]);
   const [userTickets, setUserTickets] = useState<Ticket[] | null>([]);
 
@@ -68,20 +72,21 @@ export const useTickets = () => {
   };
 
   useEffect(() => {
-    if (userContext) {
-      fetchUserTickets(userContext.id).then((response) => {
+    if (authContext.currentUser) {
+      fetchUserTickets(authContext.currentUser.uid).then((response) => {
         setUserTickets(response);
       });
     }
   }, []);
 
   const reserveTickets = async (event: Event, tickets: any) => {
+    const activeUser = await fetchUserById(authContext.currentUser!.uid);
     const data = {
       id: "",
       eventId: event.id,
       eventName: event.title,
-      ownerId: userContext?.id,
-      owner: userContext?.name,
+      ownerId: activeUser?.id,
+      owner: activeUser?.name,
       isValid: true,
       isRevoked: false,
       revokedOn: "",
@@ -90,7 +95,7 @@ export const useTickets = () => {
       deletedBy: "",
       deletedOn: "",
       createdAt: moment().format("l HH:mm:ss"),
-      createdBy: userContext?.emailAddress,
+      createdBy: activeUser?.emailAddress,
       expiresBy: `${event.dateOfEvent} ${event.time.to}`,
     };
 
@@ -144,7 +149,7 @@ export const useTickets = () => {
         await updateDoc(doc(db, "tickets", docRef.id), {
           id: docRef.id,
           updatedOn: moment().format("L HH:mm:ss"),
-          updatedBy: userContext?.emailAddress,
+          updatedBy: activeUser?.emailAddress,
         });
 
         const feedback = `Ticket ${docRef.id} reserved successfully.`;
@@ -168,14 +173,14 @@ export const useTickets = () => {
               },
             },
           },
-          updatedBy: userContext?.emailAddress,
+          updatedBy: activeUser?.emailAddress,
           updatedOn: moment().format("L HH:mm:ss"),
         });
 
         //AFTER RESERVING THE TICKETS, WE NEED TO SEND THE EMAIL TO THE USER WITH THE DETAILS OF THE ORDER THEY HAVE MADE
         const response = await sendTicketReservationMail({
-          to: userContext?.emailAddress,
-          user: userContext?.name,
+          to: activeUser?.emailAddress,
+          user: activeUser?.name,
           event: event.title,
           date: event.dateOfEvent,
           from_time: event.time.from,

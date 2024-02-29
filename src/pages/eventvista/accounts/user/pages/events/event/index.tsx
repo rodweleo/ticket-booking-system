@@ -74,6 +74,10 @@ export const EventPage = () => {
                 alert(response.emailSentResponse)
             }
 
+            if (response.errors.length > 0) {
+                console.log(response.errors)
+            }
+
             setSelectedTickets({
                 totalAmount: 0,
                 regular: 0,
