@@ -19,9 +19,9 @@ export const AdminAccount = () => {
         }
     }, [authContext])
 
-    return <main className="flex flex-1 items-start overflow-hidden w-full">
+    return <main className="flex flex-1 items-start fixed overflow-hidden w-full">
         <NavBar />
-        <main className='px-2.5 h-screen w-full'>
+        <main className='px-2.5 h-screen w-full overflow-y-auto'>
             <Routes>
                 <Route path="events/*" element={<EventList events={events} />} />
                 <Route path="tickets" element={<Tickets />} />

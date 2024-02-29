@@ -33,7 +33,7 @@ export const EventListItem: React.FC<EventProps> = ({ event, index }) => {
             <td>{event.id}</td>
             <td>{event.title}</td>
             <td>
-                <tr className="flex gap-20 w-full">
+                <tr className="flex gap-28 w-full">
                     <td>
                         <tr className="flex gap-16">
                             <td>{event.tickets.types.regular.number} </td>

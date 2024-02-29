@@ -70,7 +70,10 @@ export const EventPage = () => {
         const response = await reserveTickets(event, selectedTickets);
 
         if (response.errors.length === 0) {
-            alert(`${response.successes.length} ticket(s) reserved.`)
+            if (response.successes.length === (selectedTickets.regular + selectedTickets.vip)) {
+                alert(response.emailSentResponse)
+            }
+
             setSelectedTickets({
                 totalAmount: 0,
                 regular: 0,

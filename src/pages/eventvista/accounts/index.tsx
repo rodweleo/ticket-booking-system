@@ -1,19 +1,31 @@
 import { useContext, useEffect } from "react"
-import { UserContext } from "../../../context/UserContext"
 import { Route, Routes, useNavigate } from "react-router"
 import { AdminAccount } from "./admin"
 import { UserAccount } from "./user"
+import { useUsers } from "../../../hooks/useUsers"
+import { AuthContext } from "../../../context/AuthContext"
 
 export const Account = () => {
-    const userContext = useContext(UserContext)
+    const { fetchUserById } = useUsers()
     const navigate = useNavigate()
-    useEffect(() => {
+    const authContext = useContext(AuthContext);
 
-        if (userContext?.role === "admin") {
-            navigate("admin")
-        } else {
-            navigate("user")
+
+    useEffect(() => {
+        if (authContext.currentUser) {
+            fetchUserById(authContext.currentUser.uid).then((activeUser) => {
+                if (activeUser) {
+                    if (activeUser.role === "admin") {
+                        navigate("admin")
+                    } else if (activeUser.role === "user") {
+                        navigate("user")
+                    }
+                } else {
+                    navigate("/login")
+                }
+            })
         }
+
     }, [])
 
 

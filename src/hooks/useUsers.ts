@@ -22,25 +22,27 @@ export const useUsers = () => {
     message: "",
   });
 
+  const fetchUserById = async (userId: string) => {
+    try {
+      const docRef = doc(db, "users", userId);
+      const docSnap = await getDoc(docRef);
+
+      const user = docSnap.data();
+      return user;
+    } catch (error) {
+      console.error(error);
+      return null;
+    }
+  };
+
   useEffect(() => {
-    const fetchUserById = async (userId: string) => {
-      try {
-        const docRef = doc(db, "users", userId);
-        const docSnap = await getDoc(docRef);
-
-        const user = docSnap.data();
-        return user;
-      } catch (error) {
-        console.error(error);
-        return null;
-      }
-    };
-
     const fetchUser = () => {
-      const user = auth.currentUser;
+      const userId = JSON.parse(
+        sessionStorage.getItem("eventvista-access-token")!
+      );
 
-      if (user) {
-        fetchUserById(user.uid).then((userDetails) => {
+      if (userId) {
+        fetchUserById(userId).then((userDetails) => {
           const response = userDetails as User;
           setActiveUser(response);
         });
@@ -98,23 +100,19 @@ export const useUsers = () => {
 
       const userId = response.user.uid;
 
-      const fetchUserById = async (userId: string) => {
-        try {
-          const docRef = doc(db, "users", userId);
-          const docSnap = await getDoc(docRef);
-
-          const user = docSnap.data();
-          return user;
-        } catch (error) {
-          console.error(error);
-          return null;
-        }
-      };
+      sessionStorage.setItem("eventvista-access-token", JSON.stringify(userId));
 
       //RETRIEVE THE DETAILS OF THE USER USING THE ID
-      const userDetails = fetchUserById(userId);
-
-      return userDetails;
+      const sessionToken = JSON.parse(
+        sessionStorage.getItem("eventvista-access-token")!
+      );
+      if (sessionToken) {
+        const userDetails = await fetchUserById(sessionToken);
+        setActiveUser(userDetails as User);
+        return userDetails as User;
+      } else {
+        return null;
+      }
     } catch (error: any) {
       const errorCode = error.code;
       const errorMessage = error.message;
@@ -132,8 +130,10 @@ export const useUsers = () => {
   const signOut = () => {
     authContext.signOut().then(() => {
       setActiveUser(null);
+      sessionStorage.removeItem("eventvista-access-token");
     });
   };
+
   return {
     createAccount,
     errorCreatingAccount,
@@ -141,5 +141,6 @@ export const useUsers = () => {
     errorSigningIn,
     activeUser,
     signOut,
+    fetchUserById,
   };
 };

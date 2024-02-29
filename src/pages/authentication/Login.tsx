@@ -13,11 +13,10 @@ export const Login = () => {
     const handleGoogleSignIn = () => {
         signInWithPopup(auth, provider)
             .then((result) => {
-
                 const user = result.user;
-                if (user) {
-                    navigate("/account");
-                }
+                //create a new session token
+                sessionStorage.setItem("eventvista-access-token", JSON.stringify(user.uid));
+                navigate("/account");
             }).catch((error) => {
                 throw error;
             });
@@ -27,9 +26,7 @@ export const Login = () => {
     const onSubmit = async (data: FieldValues) => {
         const response = await signIn(data)
         if (response) {
-            navigate("/account", {
-                state: response
-            })
+            navigate("/account")
         } else {
             alert(errorSigningIn.message)
         }

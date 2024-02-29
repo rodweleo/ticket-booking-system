@@ -12,6 +12,7 @@ import { useContext, useEffect, useState } from "react";
 import { Ticket, Event } from "../utils/interfaces";
 import moment from "moment";
 import { UserContext } from "../context/UserContext";
+import { sendTicketReservationMail } from "../utils/functions/sendTicketReservationMail";
 
 export const useTickets = () => {
   const userContext = useContext(UserContext);
@@ -50,7 +51,6 @@ export const useTickets = () => {
 
       const querySnapshot = await getDocs(q);
 
-      console.log(querySnapshot);
       if (querySnapshot.docs.length === 0) {
         return [];
       } else {
@@ -73,7 +73,7 @@ export const useTickets = () => {
         setUserTickets(response);
       });
     }
-  }, [userContext]);
+  }, []);
 
   const reserveTickets = async (event: Event, tickets: any) => {
     const data = {
@@ -97,7 +97,7 @@ export const useTickets = () => {
     const generatedTickets = [];
     const errors = [];
     const successes = [];
-
+    let emailSentResponse: string | null = "";
     //CHECK IF THE REQUEST HAS REGULAR TICKETS
     if (tickets.regular > 0 && tickets.vip > 0) {
       //GENERATE THE REGULAR TICKETS THEN GENERATE THE VIP TICKETS
@@ -171,12 +171,30 @@ export const useTickets = () => {
           updatedBy: userContext?.emailAddress,
           updatedOn: moment().format("L HH:mm:ss"),
         });
+
+        //AFTER RESERVING THE TICKETS, WE NEED TO SEND THE EMAIL TO THE USER WITH THE DETAILS OF THE ORDER THEY HAVE MADE
+        const response = await sendTicketReservationMail({
+          to: userContext?.emailAddress,
+          user: userContext?.name,
+          event: event.title,
+          date: event.dateOfEvent,
+          from_time: event.time.from,
+          to_time: event.time.to,
+          location: `${event.location.venue} ${event.location.address.address} ${event.location.address.county}`,
+          regularTickets: tickets.regular ? tickets.regular : 0,
+          vipTickets: tickets.vip ? tickets.vip : 0,
+          regularTicketPrice: event.tickets.types.regular.price,
+          vipTicketPrice: event.tickets.types.vip.price,
+          totalAmount: tickets.totalAmount,
+        });
+
+        emailSentResponse = response;
       } catch (error) {
         errors.push(error);
       }
     }
 
-    return { successes, errors };
+    return { successes, errors, emailSentResponse };
   };
 
   return { tickets, reserveTickets, userTickets };
