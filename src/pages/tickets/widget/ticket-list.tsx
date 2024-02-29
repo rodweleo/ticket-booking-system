@@ -15,7 +15,7 @@ export const TicketList: React.FC<TicketListProps> = ({ tickets }) => {
                 <th className="p-2.5">#</th>
                 <th>Ticket ID</th>
                 <th>Owner ID</th>
-                <th>Owner Name</th>
+                <th>Owner</th>
                 <th>Type</th>
                 <th>Price</th>
                 <th>Date of Purchase</th>

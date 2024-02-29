@@ -22,30 +22,34 @@ export const useUsers = () => {
     message: "",
   });
 
-  const fetchUserById = async (userId: string) => {
-    try {
-      const docRef = doc(db, "users", userId);
-      const docSnap = await getDoc(docRef);
-
-      const user = docSnap.data();
-      return user;
-    } catch (error) {
-      console.error(error);
-      return null;
-    }
-  };
-
   useEffect(() => {
-    const user = auth.currentUser;
+    const fetchUserById = async (userId: string) => {
+      try {
+        const docRef = doc(db, "users", userId);
+        const docSnap = await getDoc(docRef);
 
-    if (user !== null) {
-      fetchUserById(user?.uid).then((userDetails) => {
-        const response = userDetails as User;
-        setActiveUser(response);
-      });
-    } else {
-      setActiveUser(null);
-    }
+        const user = docSnap.data();
+        return user;
+      } catch (error) {
+        console.error(error);
+        return null;
+      }
+    };
+
+    const fetchUser = () => {
+      const user = auth.currentUser;
+
+      if (user) {
+        fetchUserById(user.uid).then((userDetails) => {
+          const response = userDetails as User;
+          setActiveUser(response);
+        });
+      } else {
+        setActiveUser(null);
+      }
+    };
+
+    fetchUser();
   }, []);
 
   const createAccount = async (data: FieldValues) => {
@@ -93,6 +97,20 @@ export const useUsers = () => {
       );
 
       const userId = response.user.uid;
+
+      const fetchUserById = async (userId: string) => {
+        try {
+          const docRef = doc(db, "users", userId);
+          const docSnap = await getDoc(docRef);
+
+          const user = docSnap.data();
+          return user;
+        } catch (error) {
+          console.error(error);
+          return null;
+        }
+      };
+
       //RETRIEVE THE DETAILS OF THE USER USING THE ID
       const userDetails = fetchUserById(userId);
 

@@ -16,8 +16,8 @@ export const TicketListItem: React.FC<TicketListItemProps> = ({ ticket, index })
         document.getElementById(actionMenuId)?.classList.toggle("hidden")
     }
 
-    return <tr key={index} className="text-center border even:bg-slate-200">
-        <td>{index + 1}</td>
+    return <tr key={index} className=" border even:bg-slate-200">
+        <td className="text-center">{index + 1}</td>
         <td>{ticket.id}</td>
         <td>{ticket.ownerId}</td>
         <td>{ticket.owner}</td>

@@ -16,7 +16,7 @@ export const Login = () => {
 
                 const user = result.user;
                 if (user) {
-                    navigate("/account", { state: user });
+                    navigate("/account");
                 }
             }).catch((error) => {
                 throw error;

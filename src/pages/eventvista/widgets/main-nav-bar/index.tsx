@@ -30,8 +30,8 @@ export const MainNavBar = () => {
             <li><NavLink to="events" className="main-nav-link">Events</NavLink></li>
         </ul>
         <ul className="flex space-x-4">
-            <li><a className="border border-blue-900 p-2.5 bg-blue-900 text-white rounded-md hover:bg-blue-600 transition-all duration-300" href="/login">Login</a></li>
-            <li><a className="border border-blue-900 p-2.5 bg-blue-900/10 text-white rounded-md hover:bg-blue-600 transition-all duration-300" href="/events">Get a Ticket</a></li>
+            <li><NavLink className="border border-blue-900 p-2.5 bg-blue-900 text-white rounded-md hover:bg-blue-600 transition-all duration-300" to="login">Login</NavLink></li>
+            <li><NavLink className="border border-blue-900 p-2.5 bg-blue-900/10 text-white rounded-md hover:bg-blue-600 transition-all duration-300" to="events">Get a Ticket</NavLink></li>
 
         </ul>
     </nav>

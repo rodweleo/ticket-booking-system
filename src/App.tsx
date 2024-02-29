@@ -10,13 +10,13 @@ export const App = () => {
 
   useEffect(() => {
     if (userContext) {
-      navigate("/account")
+      navigate("account")
     }
   }, [])
   return <main >
     <Routes>
-      <Route path="/*" element={<LandingPage />}></Route>
-      <Route path="/account/*" element={<Account />}></Route>
-    </Routes>
+      <Route path="/*" element={<LandingPage />} />
+      <Route path="account/*" element={<Account />} />
+    </Routes >
   </main >
 }

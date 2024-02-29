@@ -17,6 +17,7 @@ export const useTickets = () => {
   const userContext = useContext(UserContext);
   const [tickets, setTickets] = useState<Ticket[] | null>([]);
   const [userTickets, setUserTickets] = useState<Ticket[] | null>([]);
+
   useEffect(() => {
     async function fetchTickets() {
       //RETRIEVE ALL THE TICKTS IN THE DATABASE
@@ -39,6 +40,40 @@ export const useTickets = () => {
     }
     fetchTickets();
   }, []);
+
+  const fetchUserTickets = async (userId: string) => {
+    try {
+      const q = query(
+        collection(db, "tickets"),
+        where("ownerId", "==", userId)
+      );
+
+      const querySnapshot = await getDocs(q);
+
+      console.log(querySnapshot);
+      if (querySnapshot.docs.length === 0) {
+        return [];
+      } else {
+        const fetchedTickets: any = querySnapshot.docs.map((ticket) => {
+          return ticket.data();
+        });
+
+        setUserTickets(fetchedTickets);
+
+        return fetchedTickets;
+      }
+    } catch (error) {
+      return [];
+    }
+  };
+
+  useEffect(() => {
+    if (userContext) {
+      fetchUserTickets(userContext.id).then((response) => {
+        setUserTickets(response);
+      });
+    }
+  }, [userContext]);
 
   const reserveTickets = async (event: Event, tickets: any) => {
     const data = {
@@ -144,29 +179,5 @@ export const useTickets = () => {
     return { successes, errors };
   };
 
-  const fetchUserTickets = async (userId: string) => {
-    try {
-      const q = query(
-        collection(db, "tickets"),
-        where("ownerId", "==", userId)
-      );
-      const querySnapshot = await getDocs(q);
-
-      if (querySnapshot.empty) {
-        return [];
-      } else {
-        const fetchedTickets: any = querySnapshot.docs.map((ticket) => {
-          return ticket.data();
-        });
-
-        setUserTickets(fetchedTickets);
-
-        return fetchedTickets;
-      }
-    } catch (error) {
-      return [];
-    }
-  };
-
-  return { tickets, reserveTickets, fetchUserTickets, userTickets };
+  return { tickets, reserveTickets, userTickets };
 };
