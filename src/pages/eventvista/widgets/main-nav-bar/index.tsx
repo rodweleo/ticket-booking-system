@@ -16,6 +16,8 @@ export const MainNavBar = () => {
 
             // Add "active" class to the clicked link
             target.classList.add("active");
+            const mainNavBar = document.getElementById(mainNavBarId);
+            mainNavBar?.classList.add("max-sm:hidden")
         };
 
         const mainNavLinks = document.getElementsByClassName("main-nav-link");
