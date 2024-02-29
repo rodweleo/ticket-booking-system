@@ -20,7 +20,7 @@ export const useTickets = () => {
   const { fetchUserById, setActiveUser } = useUsers();
   const [tickets, setTickets] = useState<Ticket[] | null>([]);
   const [userTickets, setUserTickets] = useState<Ticket[] | null>([]);
-
+  const [isReservingTickets, setIsReservingTeckets] = useState(false);
   useEffect(() => {
     async function fetchTickets() {
       //RETRIEVE ALL THE TICKTS IN THE DATABASE
@@ -81,6 +81,7 @@ export const useTickets = () => {
   }, []);
 
   const reserveTickets = async (event: Event, tickets: any) => {
+    setIsReservingTeckets(true);
     const activeUser = await fetchUserById(authContext.currentUser!.uid);
 
     const data = {
@@ -196,13 +197,15 @@ export const useTickets = () => {
         });
 
         emailSentResponse = response;
+        setIsReservingTeckets(false);
       } catch (error) {
         errors.push(error);
+        setIsReservingTeckets(false);
       }
     }
 
     return { successes, errors, emailSentResponse };
   };
 
-  return { tickets, reserveTickets, userTickets };
+  return { tickets, reserveTickets, userTickets, isReservingTickets };
 };

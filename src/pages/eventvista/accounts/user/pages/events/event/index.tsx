@@ -8,7 +8,7 @@ export const EventPage = () => {
     const { id } = useParams();
     const event = useLocation().state.event;
 
-    const { reserveTickets } = useTickets();
+    const { reserveTickets, isReservingTickets } = useTickets();
     const [selectedTickets, setSelectedTickets] = useState({
         regular: 0,
         totalRegularAmount: 0,
@@ -166,7 +166,7 @@ export const EventPage = () => {
                                     currency: "KES"
                                 })}</span>
                             </div>
-                            <button className="bg-blue-900 rounded-md p-2.5 text-white font-bold disabled:bg-slate-400 disabled:text-slate-600" onClick={() => handleTicketReservation()} disabled={(event.tickets.types.regular.number === 0 && event.tickets.types.vip.number === 0) || (selectedTickets.regular + selectedTickets.vip) === 0}>Reserve Tickets</button>
+                            <button className="bg-blue-900 rounded-md p-2.5 text-white font-bold disabled:bg-slate-400 disabled:text-slate-600" onClick={() => handleTicketReservation()} disabled={(event.tickets.types.regular.number === 0 && event.tickets.types.vip.number === 0) || (selectedTickets.regular + selectedTickets.vip) === 0}>{isReservingTickets ? "Reserving Tickets..." : 'Reserve Tickets'}</button>
                         </div>
                     </div >
                 </div>
