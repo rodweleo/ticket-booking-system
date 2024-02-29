@@ -15,7 +15,7 @@ export const HomePage = () => {
             </div>
         </section>
 
-        <section id="events" className="h-full">
+        <section id="events" className="h-full w-full">
             <h1 className="text-center font-bold text-4xl text-white">Our Recent Events</h1>
             <EventList />
         </section >

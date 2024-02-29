@@ -5,7 +5,7 @@ import { useEvents } from "../../../../../../../hooks/useEvents"
 export const Events = () => {
     const { events } = useEvents()
 
-    return <section>
+    return <section className="flex w-full">
         {events?.map((event, index: number) => (
             <Link to={`${event.title}`} state={{ event: event }}>
                 <EventListItem event={event} index={index} /></Link>

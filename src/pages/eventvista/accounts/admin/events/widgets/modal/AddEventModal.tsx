@@ -9,6 +9,7 @@ export const AddEventModal = () => {
     const handleEventEdit = async (data: FieldValues) => {
         const response = await addEvent(data)
         if (response) {
+            alert(response)
             navigate(-1)
         }
     }
@@ -44,14 +45,15 @@ export const AddEventModal = () => {
                                 name: "numberOfRegularTickets",
 
                                 label: "Number of Tickets",
-                                type: "number"
+                                type: "number",
+                                min: 0
                             }} />
                             <TextField options={{
                                 register,
                                 name: "regularTicketPrice",
-
                                 label: "Price per Ticket (KES)",
-                                type: "number"
+                                type: "number",
+                                min: 0
                             }} />
                         </div>
                     </div>
@@ -62,16 +64,18 @@ export const AddEventModal = () => {
                             <TextField options={{
                                 register,
                                 name: "numberOfVIPTickets",
-
+                                min: 0,
                                 label: "Number of Tickets",
-                                type: "number"
+                                type: "number",
+                                defaultValue: 0
                             }} />
                             <TextField options={{
                                 register,
                                 name: "vipTicketPrice",
-
+                                min: 0,
                                 label: "Price per Ticket (KES)",
-                                type: "number"
+                                type: "number",
+                                defaultValue: 0
                             }} />
                         </div>
                     </div>
@@ -114,7 +118,7 @@ export const AddEventModal = () => {
                 <TextField options={{
                     register,
                     name: "dateOfEvent",
-
+                    min: new Date().toISOString().split('T')[0],
                     label: "Date",
                     type: "date"
                 }} />

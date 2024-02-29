@@ -4,7 +4,7 @@ import { EventListItem } from "../pages/events/widgets/event-list-item"
 export const EventList = () => {
     const { events } = useEvents()
 
-    return <section>
+    return <section className="flex gap-5 flex-wrap items-start">
         {events?.map((event, index: number) => (
             <EventListItem event={event} index={index} />
         ))}

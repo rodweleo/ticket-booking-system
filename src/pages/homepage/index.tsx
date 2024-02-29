@@ -10,12 +10,12 @@ export const HomePage = () => {
             <p className="w-4/5 text-center mt-5 font-bold text-slate-300">
                 Whether you're seeking a night out with friends or planning a special occasion, let us be your guide to the best events in the city. Join us today and embark on a journey filled with excitement, discovery, and unforgettable memories. Explore a world of entertainment and convenience, where every ticket purchase unlocks a new adventure. </p>
             <div className="flex gap-4 mt-10">
-                <NavLink to="" className="border border-blue-900 p-2.5 bg-blue-900 text-white rounded-md hover:bg-blue-600 transition-all duration-300">Get a Ticket</NavLink>
-                <NavLink to="" className="border border-blue-900 p-2.5 text-white rounded-md hover:bg-slate-800 transition-all duration-300">More Gallery</NavLink>
+                <NavLink to="/login" className="border border-blue-900 p-2.5 bg-blue-900 text-white rounded-md hover:bg-blue-600 transition-all duration-300">Get a Ticket</NavLink>
+                <NavLink to="events" className="border border-blue-900 p-2.5 text-white rounded-md hover:bg-slate-800 transition-all duration-300">More Gallery</NavLink>
             </div>
         </section>
 
-        <section id="events" className="h-full">
+        <section id="events" className="h-full space-y-8">
             <h1 className="text-center font-bold text-4xl text-white">Our Recent Events</h1>
             <EventList />
         </section >

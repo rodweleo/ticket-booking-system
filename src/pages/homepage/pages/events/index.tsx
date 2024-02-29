@@ -5,7 +5,7 @@ import { EventListItem } from "./widgets/event-list-item"
 export const Events = () => {
     const { events } = useEvents()
 
-    return <section className="h-screen w-full">
+    return <section className="h-screen w-full flex gap-5 flex-wrap">
         {events?.map((event, index: number) => (
             <Link to={`${event.title}`} state={{ event: event }} key={index}>
                 <EventListItem event={event} index={index} /></Link>

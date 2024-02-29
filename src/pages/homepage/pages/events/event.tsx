@@ -1,74 +1,12 @@
 import moment from "moment";
-import { useEffect, useState } from "react";
 import { useLocation, useNavigate, useParams } from "react-router"
-import { useTickets } from "../../../../hooks/useTickets";
+
 
 export const EventPage = () => {
     const navigate = useNavigate();
     const { id } = useParams();
     const event = useLocation().state.event;
 
-    const { reserveTickets } = useTickets();
-    const [selectedTickets, setSelectedTickets] = useState({
-        regular: 0,
-        totalRegularAmount: 0,
-        vip: 0,
-        totalVipAmount: 0,
-        totalAmount: 0,
-    })
-
-    // Update totalRegularAmount whenever the number of selected regular tickets changes
-    useEffect(() => {
-        const regularPrice = event.tickets.types.regular.price;
-        setSelectedTickets(prevState => ({
-            ...prevState,
-            totalRegularAmount: prevState.regular * regularPrice
-        }));
-    }, [selectedTickets.regular]);
-
-    // Update totalVipAmount whenever the number of selected vip tickets changes
-    useEffect(() => {
-        const vipPrice = event.tickets.types.vip.price;
-        setSelectedTickets(prevState => ({
-            ...prevState,
-            totalVipAmount: prevState.vip * vipPrice
-        }));
-    }, [selectedTickets.vip]);
-
-    useEffect(() => {
-        setSelectedTickets({
-            ...selectedTickets, totalAmount: selectedTickets.totalRegularAmount + selectedTickets.totalVipAmount
-        })
-    }, [selectedTickets.totalRegularAmount, selectedTickets.totalVipAmount])
-
-    const increaseRegularTicketCount = () => {
-        if ((selectedTickets.regular + selectedTickets.vip) !== 5 && (selectedTickets.regular + selectedTickets.vip) < event.tickets.types.regular.number) {
-            setSelectedTickets({ ...selectedTickets, regular: selectedTickets.regular + 1 })
-        }
-
-    }
-
-    const decreaseRegularTicketCount = () => {
-        if (selectedTickets.regular > 0) {
-            setSelectedTickets({ ...selectedTickets, regular: selectedTickets.regular - 1 })
-        }
-    }
-
-    const increaseVIPTicketCount = () => {
-        if ((selectedTickets.regular + selectedTickets.vip) !== 5 && (selectedTickets.regular + selectedTickets.vip) < event.tickets.types.vip.number) {
-            setSelectedTickets({ ...selectedTickets, vip: selectedTickets.vip + 1 })
-        }
-    }
-
-    const decreaseVIPTicketCount = () => {
-        if (selectedTickets.vip > 0) {
-            setSelectedTickets({ ...selectedTickets, vip: selectedTickets.vip - 1 })
-        }
-    }
-
-    //TOTAL REGULAR TICKET AMOUNT
-
-    //const className = "z-50 w-full  backdrop-blur-sm h-screen top-0"
     return (
         <section className="space-y-10">
             <p className="text-white text-xl font-bold"><i className="fa-solid fa-arrow-left text-white" onClick={() => navigate(-1)}></i> {id}</p>
@@ -88,9 +26,9 @@ export const EventPage = () => {
                             </div>
                             <ul className="text-white flex space-x-2">
                                 <li><i className="fa-solid fa-clock text-slate-400"></i></li>
-                                <li>{moment(event.time.from).format("LT")}</li>
+                                <li>{event.time.from}</li>
                                 <li>-</li>
-                                <li>{moment(event.time.to).format("LT")}</li>
+                                <li>{event.time.to}</li>
                             </ul>
                         </div>
 
@@ -123,40 +61,11 @@ export const EventPage = () => {
                             </table>
 
 
-                            <div className="flex flex-col justify-around space-y-4">
-                                <h2 className="font-bold text-slate-200 text-xl">Reserve Tickets: </h2>
-                                <div className="grid grid-cols-2 w-fit space-x-10">
-                                    <div className="space-y-4">
-                                        <h3 className="text-white font-bold">Regular Tickets</h3>
-                                        <div className="space-x-4">
-                                            <button className="text-slate-300 scale-110" onClick={() => decreaseRegularTicketCount()}><i className="fa-solid fa-minus"></i></button>
-                                            <span className="text-blue-900 font-bold bg-white p-2 rounded-md">{selectedTickets.regular}</span>
-                                            <button className="text-slate-300 scale-110" onClick={() => increaseRegularTicketCount()}><i className="fa-solid fa-add"></i></button>
-                                        </div>
-                                    </div>
-                                    <div className="space-y-4">
-                                        <h3 className="text-white font-bold">VIP Tickets</h3>
-                                        <div className="space-x-4">
-                                            <button className="text-slate-300 scale-110" onClick={() => decreaseVIPTicketCount()}><i className="fa-solid fa-minus"></i></button>
-                                            <span className="text-blue-900 font-bold bg-white p-2 rounded-md">{selectedTickets.vip}</span>
-                                            <button className="text-slate-300 scale-110" onClick={() => increaseVIPTicketCount()}><i className="fa-solid fa-add"></i></button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+
 
 
                         </div>
-                        <div className="flex justify-end gap-10">
-                            <div className="flex items-center space-x-4">
-                                <h2 className="text-slate-200 font-bold">Total Amount:</h2>
-                                <span className="text-blue-500 font-bold text-lg">{(selectedTickets.totalRegularAmount + selectedTickets.totalVipAmount).toLocaleString("en", {
-                                    style: "currency",
-                                    currency: "KES"
-                                })}</span>
-                            </div>
-                            <button className="bg-blue-900 rounded-md p-2.5 text-white" onClick={() => reserveTickets(event, selectedTickets)}>Reserve Tickets</button>
-                        </div>
+
                     </div >
                 </div>
             </section>

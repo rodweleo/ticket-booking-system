@@ -11,13 +11,11 @@ import { useContext, useEffect, useState } from "react";
 import { db } from "../firebase/firebase.config";
 import moment from "moment";
 import { UserContext } from "../context/UserContext";
-import { useNavigate } from "react-router";
 import { Event, Ticket } from "../utils/interfaces";
 
 export const useEvents = () => {
   const userContext = useContext(UserContext);
-  const navigate = useNavigate();
-  const [events, setEvents] = useState<Event[] | null>([]);
+  const [events, setEvents] = useState<Event[] | null | undefined>([]);
   const [isFetchingEvents, setIsLoading] = useState(true);
   const [addingEventError, setAddingEventError] = useState({
     code: 0,
@@ -37,6 +35,7 @@ export const useEvents = () => {
           ...doc.data(),
         }));
 
+        //FILTER THE EVENTS AS PER THE ONCE THAT HAVE NOT BEEN DELETED
         setEvents(fetchedEvents);
         setIsLoading(false);
       } catch (e) {
@@ -47,7 +46,7 @@ export const useEvents = () => {
     }
 
     fetchEvents();
-  }, [navigate]);
+  }, []);
 
   //DEFINING FUNCTIONS TO ADD, EDIT AND REMOVE EVENTS
   const addEvent = async (event: any) => {
@@ -165,13 +164,10 @@ export const useEvents = () => {
 
       return `Event ${event.id} has been deleted.`;
     } catch (error: any) {
-      const errorCode = error.code;
-      const errorMessage = error.message;
+      //const errorCode = error.code;
+      //const errorMessage = error.message;
 
-      return {
-        errorCode,
-        errorMessage,
-      };
+      return null;
     }
   };
 

@@ -9,17 +9,15 @@ import {
 } from "firebase/firestore";
 import { db } from "../firebase/firebase.config";
 import { useContext, useEffect, useState } from "react";
-import { Ticket, Event } from "../utils/interfaces";
+import { Ticket, Event, User } from "../utils/interfaces";
 import moment from "moment";
-import { UserContext } from "../context/UserContext";
 import { sendTicketReservationMail } from "../utils/functions/sendTicketReservationMail";
 import { AuthContext } from "../context/AuthContext";
 import { useUsers } from "./useUsers";
 
 export const useTickets = () => {
-  const userContext = useContext(UserContext);
   const authContext = useContext(AuthContext);
-  const { fetchUserById } = useUsers();
+  const { fetchUserById, setActiveUser } = useUsers();
   const [tickets, setTickets] = useState<Ticket[] | null>([]);
   const [userTickets, setUserTickets] = useState<Ticket[] | null>([]);
 
@@ -73,6 +71,9 @@ export const useTickets = () => {
 
   useEffect(() => {
     if (authContext.currentUser) {
+      fetchUserById(authContext.currentUser!.uid).then((user) => {
+        setActiveUser(user as User);
+      });
       fetchUserTickets(authContext.currentUser.uid).then((response) => {
         setUserTickets(response);
       });
@@ -81,6 +82,7 @@ export const useTickets = () => {
 
   const reserveTickets = async (event: Event, tickets: any) => {
     const activeUser = await fetchUserById(authContext.currentUser!.uid);
+
     const data = {
       id: "",
       eventId: event.id,
@@ -94,7 +96,7 @@ export const useTickets = () => {
       isDeleted: false,
       deletedBy: "",
       deletedOn: "",
-      createdAt: moment().format("l HH:mm:ss"),
+      createdAt: moment().format("LL HH:mm:ss"),
       createdBy: activeUser?.emailAddress,
       expiresBy: `${event.dateOfEvent} ${event.time.to}`,
     };

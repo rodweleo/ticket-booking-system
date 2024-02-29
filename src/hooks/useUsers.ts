@@ -142,5 +142,6 @@ export const useUsers = () => {
     activeUser,
     signOut,
     fetchUserById,
+    setActiveUser
   };
 };

@@ -13,9 +13,7 @@ export const EventList: React.FC<EventsProps> = ({ events }) => {
             <h1 className="text-white font-bold text-2xl">Events</h1>
             <div className="bg-white w-fit p-5 shadow-md shadow-slate-500 rounded-md">
                 <h1 className="font-bold text-slate-400">Total Events</h1>
-                <p className="font-bold text-slate-600">{events?.filter((event) => {
-                    return event.isDeleted === false
-                }).length}</p>
+                <p className="font-bold text-slate-600">{events ? events.length : 0}</p>
             </div>
 
             <Routes>

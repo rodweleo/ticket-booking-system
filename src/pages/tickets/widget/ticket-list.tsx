@@ -1,27 +1,26 @@
-import { useContext } from "react"
 import { Ticket } from "../../../utils/interfaces"
 import { TicketListItem } from "./ticket-list-item"
-import { UserContext } from "../../../context/UserContext"
+
 
 
 interface TicketListProps {
     tickets: Ticket[] | null
 }
 export const TicketList: React.FC<TicketListProps> = ({ tickets }) => {
-    const userContext = useContext(UserContext)
-    return <table className="text-left w-full">
+    return <table className="text-center w-full">
         <thead>
             <tr>
                 <th className="p-2.5">#</th>
                 <th>Ticket ID</th>
-                <th>Owner ID</th>
                 <th>Owner</th>
-                <th>Type</th>
-                <th>Price</th>
+                <th>Ticket Type</th>
+                <th>Ticket Price</th>
+                <th>Event ID</th>
+                <th>Event Name</th>
                 <th>Date of Purchase</th>
                 <th>Validity</th>
                 <th>isValid</th>
-                {userContext?.role === "admin" && <th>Action</th>}
+                <th className="hidden">Action</th>
             </tr>
         </thead>
         <tbody>

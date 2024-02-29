@@ -8,7 +8,7 @@ export const Register = () => {
     const navigate = useNavigate()
     const handleGoogleSignUp = () => {
         //FIRST LOGIN WITH THE GOOGLE AUTH PROVIDER
-        
+
     }
     const { register, handleSubmit } = useForm()
 
@@ -47,11 +47,13 @@ export const Register = () => {
                 <button className="bg-blue-900 text-white px-10 py-2.5 rounded-md">Sign Up</button>
             </div>
 
-            <div className="h-4"></div>
-            <div className="flex flex-col items-center justify-center">
-                <p className="text-slate-400">or</p>
+            <div className="hidden">
                 <div className="h-4"></div>
-                <button onClick={() => handleGoogleSignUp()} type="button" className="w-full justify-center flex bg-slate-300  hover:bg-slate-400 gap-1 p-2 rounded-md"> <img src="/images/google.png" alt="" loading="lazy" height="25" width="25" />Sign up with Google</button>
+                <div className="flex flex-col items-center justify-center">
+                    <p className="text-slate-400">or</p>
+                    <div className="h-4"></div>
+                    <button onClick={() => handleGoogleSignUp()} type="button" className="w-full justify-center flex bg-slate-300  hover:bg-slate-400 gap-1 p-2 rounded-md"> <img src="/images/google.png" alt="" loading="lazy" height="25" width="25" />Sign up with Google</button>
+                </div>
             </div>
             <div className="h-8"></div>
             <p className="text-center"> Already have an account? <Link to="/login" className=" text-blue-900 font-bold">Sign In</Link></p>
