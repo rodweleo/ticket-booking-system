@@ -4,8 +4,8 @@ import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
 import { auth } from "../../firebase/firebase.config";
 import { Link, useNavigate } from "react-router-dom";
 import { useUsers } from "../../hooks/useUsers";
-
-export const Login = () => {
+import LoginForm from "@/components/ui/login-form";
+const SignIn = () => {
     const { signIn, errorSigningIn } = useUsers();
     const navigate = useNavigate()
     const provider = new GoogleAuthProvider();
@@ -31,10 +31,9 @@ export const Login = () => {
             alert(errorSigningIn.message)
         }
     }
-    return <section className="flex flex-col w-screen h-screen justify-center items-center">
-        <h1 className="text-white font-bold">Welcome back to <span className="text-blue-900 font-bold">EventVista</span></h1>
-        <div className="h-8"></div>
-        <form className="bg-white p-5 rounded-md w-96" onSubmit={handleSubmit(onSubmit)}>
+    return (
+        <main className="grid place-items-center h-screen">
+        <form className=" p-5 rounded-md w-96 hidden" onSubmit={handleSubmit(onSubmit)}>
             <h1 className="font-bold">Sign In</h1>
             <div className="h-4"></div>
             <TextField options={{ name: "emailAddress", register, label: "Email Address", type: "email", placeHolder: "abc.gmail.com", leadingIcon: "fa-regular fa-envelope scale-105" }} />
@@ -56,5 +55,9 @@ export const Login = () => {
             <div className="h-8"></div>
             <p className="text-center">Don't have an account? <Link to="/register" className="text-blue-900 font-bold">Sign Up</Link></p>
         </form>
-    </section>
+        <LoginForm />
+    </main>
+    )
 }
+
+export default SignIn
