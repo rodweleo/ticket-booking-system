@@ -5,6 +5,7 @@ import RootFooter from "@/components/ui/root-footer"
 import SignIn from "@/pages/authentication/sign-in"
 import { EventPage } from "../events/[id]/event"
 import {Events} from "../events"
+import EventCheckout from "../events/[id]/event-checkout"
 
 const Root = () => {
 
@@ -17,9 +18,13 @@ const Root = () => {
                     <Route path="sign-in" element={<SignIn />} />
                     <Route path="events" >
                         <Route index element={<Events />} />
-                        <Route path=":id/*" element={<EventPage />} />
+                        <Route path=":id">
+                            <Route index element={<EventPage />} />
+                            <Route path="checkout" element={<EventCheckout/>} />
+                        </Route>
                     </Route>
                 </Routes>
+
             </section>
             <RootFooter />
         </main>

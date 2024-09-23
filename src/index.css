@@ -6,6 +6,16 @@
 body{
   background-color: #020617;
 }
+
+.booking-summary-table tbody tr th{
+  @apply text-lg text-right p-2.5 text-white font-normal
+}
+
+.booking-summary-table tbody tr td{
+  @apply text-lg text-left p-2.5 text-white font-bold
+}
+
+
 @layer base {
   :root {
     --background: 0 0% 100%;

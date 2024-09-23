@@ -1,17 +1,17 @@
 import moment from "moment";
-import {  useLocation, useNavigate, useParams } from "react-router"
+import { useNavigate, useParams } from "react-router"
 import { useState, useEffect } from "react"
 import { FaCalendarDay, FaUserTie } from "react-icons/fa";
-import { FaLocationDot } from "react-icons/fa6";
-
+import { FaLocationDot, FaTicket } from "react-icons/fa6";
+import { Button } from "@/components/ui/button";
+import useEventQuery from "../../../react-queries/use-event-query";
 
 export const EventPage = () => {
-    const navigate = useNavigate();
     const { id } = useParams();
-    const {state} = useLocation()
-    const {event} = state;
     const [activeTab, setActiveTab] = useState<string>("event-details")
-    const [selectedItem, setSelectedItem] = useState("/images/hero-section-bg.png");
+    const { data, isLoading} = useEventQuery(id as string);
+    const navigate = useNavigate();
+    const event = data;
 
 
     const tabs = [
@@ -35,7 +35,7 @@ export const EventPage = () => {
     }
 
     useEffect(() => {
-        document.title = event.title;
+        document.title = event?.title;
         const favicon = document.getElementById("favicon");
         if (favicon) {
             favicon.setAttribute("href",
@@ -43,6 +43,25 @@ export const EventPage = () => {
         }
        
     }, [])
+
+    if(!event){
+        return (
+            <div>No event found</div>
+        )
+    }
+
+    const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
+        // Perform any necessary validation here
+        navigate(`checkout`, {
+            state: {
+                event: event,
+                tickets: 2,
+                attendees: 2
+        }});
+    };
+
+
     return (
         <main className="container space-y-10 ">
             <section className="flex justify-between flex-wrap gap-5">
@@ -88,7 +107,7 @@ export const EventPage = () => {
                                                     <FaLocationDot size={40} className="text-blue-500 bg-blue-500/40 p-2 rounded-full" />
                                                     <div className="*:text-white">
                                                         <h1 >Location</h1>
-                                                        <p className="text-lg font-bold">{moment(event.dateofEvent).format("MMMM Do YYYY")}</p>
+                                                        <p className="text-lg font-bold">{event.location.address.address}, {event.location.address.county}</p>
                                                     </div>
                                                 </div>
                                             </li>
@@ -97,7 +116,7 @@ export const EventPage = () => {
                                                     <FaUserTie size={40} className="text-blue-500 bg-blue-500/40 p-2 rounded-full" />
                                                     <div className="*:text-white">
                                                         <h1 >Organized By</h1>
-                                                        <p className="text-lg font-bold">{moment(event.dateofEvent).format("MMMM Do YYYY")}</p>
+                                                        <p className="text-lg font-bold">NULL</p>
                                                     </div>
                                                 </div>
                                             </li>
@@ -109,6 +128,11 @@ export const EventPage = () => {
                     </div>
                 </div>
             </section>
+
+            <form onSubmit={handleSubmit}>
+                <Button type="submit" className="flex items-center gap-2.5 bg-blue-900 hover:bg-blue-800 text-xl py-6 rounded-md w-full" disabled={isLoading || !event}><FaTicket size={25} /> <span>BOOK NOW</span></Button>
+            </form>
+
 
 
             <section className="hidden justify-start max-lg:flex-wrap items-start h-screen space-x-4 transition-all duration-300 ease-in-out">

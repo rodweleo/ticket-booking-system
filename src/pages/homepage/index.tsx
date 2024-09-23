@@ -1,10 +1,10 @@
 import { NavLink } from "react-router-dom"
 import { Button } from "@/components/ui/button"
 import EventSearchBox from "@/components/ui/event-search-box"
-import EventCard from "@/components/ui/event-card"
 import CategoryCard from "@/components/ui/category-card"
 import { useState, useEffect } from "react"
 import UpcomingEvents from "@/components/ui/upcoming-events"
+
 export const HomePage = () => {
     const [activeTab, setActiveTab] = useState(1)
 
@@ -60,25 +60,23 @@ export const HomePage = () => {
         </section >
 
         <section className="container z-50 space-y-5">
-            <h1 className="text-white text-3xl">Popular Events Near You </h1>
-            <div className="flex flex-wrap gap-5">
-                <EventCard/>
-                <EventCard />
-                <EventCard/>
-            </div>
+            <h1 className="text-white text-3xl font-bold">Popular Events Near You </h1>
+            <p className="font-bold text-slate-400 text-xl italic">No Events Near You.</p>
         </section>
 
-        <section className="container z-50 p-5 space-y-5">
+        <section className="container z-50 space-y-5">
             <h1 className="text-white text-3xl font-bold">Browse by Categories </h1>
-            <div className="flex flex-wrap gap-5">
+            <p className="font-bold text-slate-400 text-xl italic">No Available Categories.</p>
+            <div className="flex flex-wrap gap-5 hidden">
                 <CategoryCard category="Concerts"/>
                 <CategoryCard category="Football" />
                 <CategoryCard category="Music Festivals" />
                 <CategoryCard category="Basketball" />
                 <CategoryCard category="Theatre" />
             </div>
+          
         </section>
-
+       
         <section className="flex w-full items-center flex-col justify-center space-y-4 bg-blue-950 py-20">
             <h1 className="text-4xl text-white text-center max-w-2xl font-bold">Discover Unforgettable experiences with <span className="">Lyte</span></h1>
             <p className=" max-w-3xl text-xl text-center flex flex-col font-normal text-slate-200">

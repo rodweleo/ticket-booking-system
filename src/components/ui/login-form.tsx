@@ -21,8 +21,12 @@ import {
 } from "./form"
 import { Input } from "./input"
 import { Link } from "react-router-dom"
-const LoginForm = () => {
+import { ConnectButton } from "thirdweb/react";
+import thirdWebClient from "@/utils/third-web-client";
+import { useMetamask, useDisconnect, useAddress } from '@thirdweb-dev/react';
 
+const LoginForm = () => {
+    const connectWithMetamask = useMetamask();
     const loginForm = useForm<z.infer<typeof LoginSchema>>({
         resolver: zodResolver(LoginSchema),
         defaultValues: {
@@ -46,8 +50,9 @@ const LoginForm = () => {
                         <CardDescription>Enter credentials to access your account</CardDescription>
                     </CardHeader>
                     <CardContent className="space-y-5">
-                        <div className="flex flex-col w-full">
-                            <Button variant="outline" className="w-full" type="button">Sign in with Google</Button>
+                        <div className="flex flex-col w-full gap-2.5">
+                            <Button variant="outline" className="w-full" type="button">Continue with Google</Button>
+                            <Button onClick={() => connectWithMetamask()} variant="outline" className="w-full" type="button">Continue with MetaMask</Button>
                         </div>
                         <p className="text-center text-slate-500">or</p>
                         <div className="space-y-4">

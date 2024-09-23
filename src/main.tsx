@@ -4,20 +4,32 @@ import {
   BrowserRouter as Router,
 } from "react-router-dom";
 import { App } from './App.tsx';
-import { AuthProvider } from './components/ui/use-auth-client.tsx';
 import {
   QueryClient,
   QueryClientProvider,
 } from '@tanstack/react-query'
 const queryClient = new QueryClient()
-
+import { ThirdwebProvider } from "@thirdweb-dev/react";
+import { Celo } from "@thirdweb-dev/chains";
+import { MetaMaskProvider } from "@metamask/sdk-react"
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <Router>
-    <AuthProvider>
+    <MetaMaskProvider
+      debug={false}
+      sdkOptions={{
+        dappMetadata: {
+          name: "Lyte",
+          url: window.location.href,
+        },
+        infuraAPIKey: import.meta.env.VITE_REACT_APP_INFURA_LYTE_API_KEY,
+      }}
+    >
+    <ThirdwebProvider activeChain={Celo}>
       <QueryClientProvider client={queryClient}>
         <App />
       </QueryClientProvider>
-    </AuthProvider>
+    </ThirdwebProvider>
+    </MetaMaskProvider>
   </Router>,
 )
