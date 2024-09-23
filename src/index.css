@@ -85,5 +85,5 @@ button{
 }
 
 button:active{
-  @apply scale-95
+  @apply scale-[0.985]
 }

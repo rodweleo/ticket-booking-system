@@ -12,6 +12,8 @@ const queryClient = new QueryClient()
 import { ThirdwebProvider } from "@thirdweb-dev/react";
 import { Celo } from "@thirdweb-dev/chains";
 import { MetaMaskProvider } from "@metamask/sdk-react"
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <Router>
@@ -27,7 +29,8 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
     >
     <ThirdwebProvider activeChain={Celo}>
       <QueryClientProvider client={queryClient}>
-        <App />
+          <App />
+          <ToastContainer/>
       </QueryClientProvider>
     </ThirdwebProvider>
     </MetaMaskProvider>
