@@ -35,14 +35,16 @@ export const EventPage = () => {
     }
 
     useEffect(() => {
-        document.title = event?.title;
-        const favicon = document.getElementById("favicon");
-        if (favicon) {
-            favicon.setAttribute("href",
-                "/images/hero-section-bg.png");
+        if(event){
+            document.title = event.title;
+            const favicon = document.getElementById("favicon");
+            if (favicon) {
+                favicon.setAttribute("href",
+                    "/images/hero-section-bg.png");
+            }
         }
        
-    }, [])
+    }, [event])
 
     if(!event){
         return (

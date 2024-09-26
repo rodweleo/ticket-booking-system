@@ -13,14 +13,10 @@ import {
 import { Input } from "@/components/ui/input"
 import {useLocation} from "react-router-dom"
 // import { contractKit } from "@/utils/contract-kit"
-import { mento } from "@/utils/mento"
-import { useSDK } from "@metamask/sdk-react";
-import { useEffect, useRef, useState } from "react";
-import { utils } from "ethers";
+import { useEffect, useRef } from "react";
 import {
   Dialog,
   DialogContent,
-
   DialogHeader,
   DialogTitle,
   DialogTrigger,
@@ -35,6 +31,7 @@ import { Separator } from "@/components/ui/separator"
 import { FaRegCopy } from "react-icons/fa";
 import { RiCoinsFill } from "react-icons/ri";
 import { toast } from 'react-toastify';
+import {utils} from "ethers"
 
 const formSchema = z.object({
     username: z.string().min(2, {
@@ -43,22 +40,11 @@ const formSchema = z.object({
 })
 
 const EventCheckout = () => {
-    const [account, setAccount] = useState<string>();
-    const { sdk, connected, chainId } = useSDK();
     const location = useLocation();
     const {event, tickets, attendees} = location.state;
-    const [pair, setPair] = useState<string[]>([])
+
     const celoAddressRef = useRef<HTMLParagraphElement | null>(null)
 
-
-    const connectWithMetamask = async () => {
-        try {
-            const accounts = await sdk?.connect();
-            setAccount(accounts?.[0]);
-        } catch (err) {
-            console.warn("failed to connect..", err);
-        }
-    };
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
         defaultValues: {
@@ -72,32 +58,6 @@ const EventCheckout = () => {
         console.log(values)
     }
 
-    const testing = async () => {
-        const pairs = await mento.getTradeablePairs();
-        setPair(pairs[0])
-        // const accounts = await contractKit.web3.eth.getAccounts();
-        // console.log(accounts)
-    }
-
-    const getQuotation = async () => {
-        const cUsdAddress = pair[0].address;
-        const cKesAddress = pair[1].address;
-        const tokenUnits = 18;
-        const amountIn = utils.parseUnits("1500", tokenUnits);
-       
-        try {
-            const quoteAmountOut = await mento.getAmountOut(cKesAddress, cUsdAddress, amountIn);
-            console.log(`~${utils.formatUnits(
-                quoteAmountOut,
-                tokenUnits
-            )} cUSD needed to buy 1500 CELO`);
-        } catch (error) {
-            console.error("Error getting quote:", error);
-            // Handle the error appropriately (e.g. display a user-friendly message)
-        }
-    }
-
-    // console.log(pair)
 
     useEffect(() => {
         document.title = `Checkout | ${event.title}`
@@ -117,6 +77,12 @@ const EventCheckout = () => {
         } 
     }
 
+    const getMentoExchangePairs = async () => {
+        
+    }
+
+    const balanceInEther = utils.formatUnits("0x145f1ec87ddd0400", 18);
+    console.log(balanceInEther)
     return (
         <main className="container space-y-10">
             <section>
@@ -225,7 +191,7 @@ const EventCheckout = () => {
                             <AccordionItem value="item-1">
                                 <AccordionTrigger><div className="flex items-center gap-5 text-lg"><RiCoinsFill size={20} /> Celo (USDC, cKES)</div></AccordionTrigger>
                                 <AccordionContent>
-                                    <div className="space-y-2.5">
+                                    <div className="space-y-2">
                                         <h1 className="font-bold text-xl">Payment Instructions</h1>
                                         <p className="text-lg">Please copy the following <strong>Celo address</strong> and transact the required amount to it. </p>
                                         <p className="text-lg">You are required to pay <strong>cKES 10.00 / USDC 0.58</strong></p>
@@ -235,7 +201,7 @@ const EventCheckout = () => {
                                         <div>
                                             <div className="space-y-1">
                                                 <p className="flex text-lg items-center justify-between"><strong>Celo Address:</strong> <button onClick={copyCeloAddress} className="text-blue-500 flex items-center gap-2"><FaRegCopy/> <span>Copy Address</span></button></p>
-                                                <p className="text-bold text-lg font-bold text-blue-500" ref={celoAddressRef}>0x834d7d028E19f5A4aB89bd4A99241E1a8C1C939E</p>
+                                                <p className="text-bold text-lg font-bold text-blue-500" ref={celoAddressRef}>0x7f0813A544C8b3082da8E840AC951e83Fb9930bc</p>
                                             </div>
                                         </div>
                                         <Form {...form}>
@@ -254,12 +220,10 @@ const EventCheckout = () => {
                                                         </FormItem>
                                                     )}
                                                 />
-                                                <Button className="bg-blue-900 hover:bg-blue-800 w-full text-lg py-7">Verify cKES 10.00 / USDC 0.58</Button>
+                                                <Button onClick={getMentoExchangePairs} type="button" className="bg-blue-900 hover:bg-blue-800 w-full text-lg py-7">Verify cKES 10.00 / USDC 0.58</Button>
                                             </form>
                                         </Form>
                                     </div>
-                                    
-                                    
                                 </AccordionContent>
                             </AccordionItem>
                         </Accordion>

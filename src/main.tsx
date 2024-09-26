@@ -9,30 +9,17 @@ import {
   QueryClientProvider,
 } from '@tanstack/react-query'
 const queryClient = new QueryClient()
-import { ThirdwebProvider } from "@thirdweb-dev/react";
-import { Celo } from "@thirdweb-dev/chains";
-import { MetaMaskProvider } from "@metamask/sdk-react"
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { AuthProvider } from './components/ui/use-auth-client.tsx';
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <Router>
-    <MetaMaskProvider
-      debug={false}
-      sdkOptions={{
-        dappMetadata: {
-          name: "Lyte",
-          url: window.location.href,
-        },
-        infuraAPIKey: import.meta.env.VITE_REACT_APP_INFURA_LYTE_API_KEY,
-      }}
-    >
-    <ThirdwebProvider activeChain={Celo}>
-      <QueryClientProvider client={queryClient}>
-          <App />
-          <ToastContainer/>
+    <QueryClientProvider client={queryClient}>
+        <AuthProvider>
+            <App />
+            <ToastContainer />
+        </AuthProvider>
       </QueryClientProvider>
-    </ThirdwebProvider>
-    </MetaMaskProvider>
   </Router>,
 )
